@@ -1,0 +1,5 @@
+# Created at 2025-10-06T20:34:06.909
+Boot Manifest-JAR contains absolute paths in classpath 'D:\Programming\dnd\DndCharacterCreatorDemoSoloEdition\back-end\dndCharacterCreatorDemo\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

@@ -21,10 +21,6 @@ public class Character extends BaseEntity{
     @NotBlank(message = "Name is mandatory")
     private String name;
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
-    @NotNull(message = "User is mandatory")
-    private User user;
-    @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
     @NotNull(message = "Class is mandatory")
     private DNDclass dndClass;
@@ -64,14 +60,6 @@ public class Character extends BaseEntity{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public DNDclass getDNDclassId() {
@@ -151,7 +139,7 @@ public class Character extends BaseEntity{
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, user, dndClass,
+        return Objects.hash(name, dndClass,
                 level, baseStr, baseDex, baseCon,
                 baseInt, baseWis, baseCha,
                 proficiencyCharacters, characterSpells,

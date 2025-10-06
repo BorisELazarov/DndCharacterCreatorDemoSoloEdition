@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.example.dndcharactercreatordemo.DndCharacterCreatorSoloEditionApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.552 s <<< FAILURE! -- in com.example.dndcharactercreatordemo.DndCharacterCreatorSoloEditionApplicationTests
+com.example.dndcharactercreatordemo.DndCharacterCreatorSoloEditionApplicationTests.contextLoads -- Time elapsed: 0.012 s <<< ERROR!
+org.junit.jupiter.api.extension.ParameterResolutionException: No ParameterResolver registered for parameter [com.example.dndcharactercreatordemo.dal.repos.ProficiencyRepo proficiencyRepo] in constructor [public com.example.dndcharactercreatordemo.DndCharacterCreatorSoloEditionApplicationTests(com.example.dndcharactercreatordemo.dal.repos.ProficiencyRepo)].
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
