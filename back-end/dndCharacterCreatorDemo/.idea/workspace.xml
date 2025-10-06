@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e32d2736-2b62-4a8a-9434-b80733b10a2d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/admin/admin.guard.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/admin/admin.guard.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/character/character.guard.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/character/character.guard.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/data-manager/data-manager.guard.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/data-manager/data-manager.guard.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/user/user.guard.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/guards/user/user.guard.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/interceptor/auth.interceptor.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/interceptor/auth.interceptor.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/login/login.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/login/login.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/login/login.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/login/login.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/register/register.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/register/register.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/register/register.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/auth/register/register.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-email/change-email.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-email/change-email.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-email/change-email.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-email/change-email.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-password/change-password.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-password/change-password.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-password/change-password.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-password/change-password.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-username/change-username.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-username/change-username.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-username/change-username.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/change-username/change-username.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/profile-details/profile-details.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/profile-details/profile-details.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/profile-details/profile-details.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front-end/src/app/core/profile-management/profile-details/profile-details.component.ts" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="33hhjlyh1oZgwVsEAVSx5Fs9hOE" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "D:/Programming/dnd/DndCharacterCreatorDemoSoloEdition/back-end/dndCharacterCreatorSoloEdition"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e32d2736-2b62-4a8a-9434-b80733b10a2d" name="Changes" comment="" />
+      <created>1759775356806</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759775356806</updated>
+    </task>
+    <servers />
+  </component>
+</project>
