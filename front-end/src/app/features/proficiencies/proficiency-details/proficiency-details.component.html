@@ -1,0 +1,6 @@
+<h1>Proficiency details:</h1>
+<h2>Name: {{proficiency?.name}}</h2>
+<h2>Type: {{proficiency?.type}}</h2>
+<a [routerLink]="['/proficiencies/edit',proficiency?.id]">Edit</a><br>
+<a [routerLink]="['/proficiencies']" (click)="openDialog()">delete</a><br>
+<a [routerLink]="['/proficiencies']">Back</a>

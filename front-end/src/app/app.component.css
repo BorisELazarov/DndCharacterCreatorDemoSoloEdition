@@ -1,0 +1,9 @@
+a{
+    text-decoration: none;
+    color: white;
+}
+
+.separator{
+    padding: 10px;
+    border-right: 3px solid white;
+}
