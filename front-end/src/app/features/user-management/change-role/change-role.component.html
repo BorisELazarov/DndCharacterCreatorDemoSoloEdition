@@ -1,0 +1,23 @@
+<h1>User:</h1>
+<h2>Username:</h2><p>{{user?.username}}</p>
+<h2>Email:</h2><p>{{user?.email}}</p>
+@if (user!==undefined) {
+<mat-form-field>
+    <mat-label>Role:</mat-label>
+    <mat-select [(value)]="user!.role">
+        <mat-option value="user">
+            User
+        </mat-option>
+        <mat-option value="data manager">
+            Data manager
+        </mat-option>
+    </mat-select>
+</mat-form-field>
+<br>
+<button mat-fab extended (click)="alert()">
+    <mat-icon>
+        save
+    </mat-icon>
+    Change role
+</button>
+}

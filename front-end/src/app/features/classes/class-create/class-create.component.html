@@ -1,0 +1,93 @@
+<div class="center">
+    <div>
+    <h1>Create class</h1>
+    <form class="example-form" [formGroup]="createForm" (ngSubmit)="submit()">
+        <mat-form-field class="full-width">
+            <mat-label>Name:</mat-label>
+            <input matInput type="text" formControlName="name">
+            <div *ngIf="createForm.controls['name'].errors?.['required']">
+                <a class="danger">*Field must no be empty!</a>
+                <br>
+            </div>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Hit Dice</mat-label>
+        <mat-select formControlName="hitDice">
+            <mat-option value="D6">D6</mat-option>
+            <mat-option value="D8">D8</mat-option>
+            <mat-option value="D10">D10</mat-option>
+            <mat-option value="D12">D12</mat-option>
+        </mat-select>
+          </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Description:</mat-label>
+            <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
+            <div *ngIf="createForm.controls['description'].errors?.['required']">
+                <a class="danger">*Field must not be empty!</a>
+            </div>
+        </mat-form-field>
+                <br>
+            <button type="submit">Save</button>
+    </form>
+    </div>
+</div>
+<hr>
+<h2>Proficiencies</h2>
+<ol>
+    @for (savedItem of dndClass.proficiencies; track $index) {
+        <li>
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-card-title>Proficiency #{{$index+1}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list role="list">
+                    <mat-list-item role="listitem">Type: {{savedItem.type}}</mat-list-item>
+                    <mat-list-item role="listitem">Name: {{savedItem.name}}</mat-list-item>
+                </mat-list>
+            </mat-card-content>
+            <mat-card-actions>
+                <button (click)="remove(savedItem)" mat-button>
+                    <mat-icon>
+                        delete
+                    </mat-icon>
+                </button>
+            </mat-card-actions>
+          </mat-card>
+        </li>
+    }
+</ol>
+<mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Proficiency:</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field>
+            <mat-label>Type:</mat-label>
+            <mat-select [(value)]="proficiency.type" (selectionChange)="setType()">
+            @for (item of typeList; track $index) {
+                <mat-option [value]="item">
+                    {{item}}
+                </mat-option>
+            }
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Name:</mat-label>
+            <mat-select [(value)]="proficiency.name" (selectionChange)="setName()">
+            @for (item of nameList; track $index) {
+                <mat-option [value]="item">
+                    {{item}}
+                </mat-option>
+            }
+            </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button [disabled]="disabled" (click)="addProficiency()">
+            <mat-icon>
+                save
+            </mat-icon>
+        </button>
+    </mat-card-actions>
+  </mat-card>

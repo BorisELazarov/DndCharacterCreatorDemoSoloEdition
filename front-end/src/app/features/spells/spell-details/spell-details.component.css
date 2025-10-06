@@ -1,0 +1,16 @@
+
+.left{
+    float: left;
+    display: flexbox;
+}
+.p-text{
+    font-size: large;
+}
+.search{
+    background-color: lightgrey;
+    margin-bottom: 3%;
+}
+.table{
+    float: left;
+    width: 100%;
+}

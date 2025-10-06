@@ -1,0 +1,46 @@
+<h1>Proficiency details:</h1>
+<h2>Name: {{spell?.name}}</h2>
+<h2>
+    Level:
+    @if (spell?.level===0) {
+        Cantrip
+    }
+    @else {
+        {{spell?.level}}
+    }
+</h2>
+<h2>Casting Time: {{spell?.castingTime}}</h2>
+<h2>
+    Range: 
+    @if (spell?.castingRange===0) {
+        Self
+    }
+    @else {
+        {{spell?.castingRange}}
+    }
+</h2>
+<h2>Components: {{spell?.components}}</h2>
+<h2>
+    Duration: 
+    @if (spell?.duration===0) {
+        Instantaneous
+    }
+    @else if ((spell?.duration??-1)%(60*60*24)===0) {
+        {{(spell?.duration??-1)/(60*60*24)}} Days
+    }
+    @else if ((spell?.duration??-1)%(60*60)===0) {
+        {{(spell?.duration??-1)/(60*60)}} Hours
+    }
+    @else if ((spell?.duration??-1)%60===0) {
+        {{(spell?.duration??-1)/60}} Minutes
+    }
+    @else if ((spell?.duration??-1)%6===0) {
+        {{(spell?.duration??-1)/6}} Turns
+    }
+</h2>
+<h2>Target: {{spell?.target}}</h2>
+<h2>Description:</h2>
+<p><span class="p-text">{{spell?.description}}</span></p>
+<a [routerLink]="['/spells/edit',spell?.id]">Edit</a><br>
+<a [routerLink]="['/spells']" (click)="openDialog()">delete</a><br>
+<a [routerLink]="['/spells']">Back</a>

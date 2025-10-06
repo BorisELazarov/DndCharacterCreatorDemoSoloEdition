@@ -3,16 +3,52 @@
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <div class="separator">
-        <a href="proficiencies">List</a>
-      </div>
-      <div class="separator">
-        <a href="proficiencies/create">Create</a>
-        <mat-icon>verified_user</mat-icon>
-      </div>
-      <div class="separator">
-        <a href="about">About</a>
+        <a [routerLink]="['home']">Home</a>
         <mat-icon>info</mat-icon>
       </div>
+      @if (role()===undefined) {
+        <div class="separator">
+          <a [routerLink]="['register']">Register</a>
+        </div>
+        <div class="separator">
+          <a [routerLink]="['login']">Login</a>
+        </div>
+      }
+      @else {
+        <div class="separator">
+          <a [routerLink]="['profile']" >My profile</a>
+        </div>
+        @if (deleted()===false) {
+          @switch (role()) {
+            @case ('user') {
+              <div class="separator">
+                <a [routerLink]="['characters']">Characters</a>
+              </div>
+            }
+            @case ('data manager') {
+              <div class="separator">
+                <a [routerLink]="['proficiencies']">Proficiencies</a>
+              </div>
+              <div class="separator">
+                <a [routerLink]="['classes']">Classes</a>
+              </div>
+              <div class="separator">
+                <a [routerLink]="['spells']">Spells</a>
+              </div>
+            }
+            @case ('admin') {
+              <div class="separator">
+                <a [routerLink]="['users']">Users</a>
+              </div>
+            }
+          }
+        }
+        <div class="separator">
+          <button color="primary" [routerLink]="['login']" mat-mini-fab (click)="logOut()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      }
     </mat-toolbar-row>
   </mat-toolbar>
 </main>

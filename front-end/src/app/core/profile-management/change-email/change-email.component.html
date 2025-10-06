@@ -1,0 +1,19 @@
+<div class="center">
+    <div>
+    <h1>Change email</h1>
+    <form class="form" [formGroup]="emailForm" (ngSubmit)="submit()">
+        <mat-form-field class="full-width">
+            <mat-label>Email:</mat-label>
+            <input matInput type="email" formControlName="email">
+            <div *ngIf="emailForm.controls['email'].errors?.['required']">
+                <a class="danger">*Email must no be empty!</a>
+                <br>
+            </div>
+        </mat-form-field>
+                <br>
+            <button type="submit">Save</button>
+    </form>
+    </div>
+    </div>
+
+

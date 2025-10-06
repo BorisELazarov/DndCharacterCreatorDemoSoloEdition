@@ -4,28 +4,29 @@
     <span class="title">Filter:</span>
     <mat-form-field class="example-form-field">
         <mat-label>Name</mat-label>
-        <input matInput type="text" [(ngModel)]="filter.name">
+        <input matInput type="text" [(ngModel)]="filter.name" (ngModelChange)="search()">
         @if (filter.name) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.name=''">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.name=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
         }
     </mat-form-field>
     <mat-form-field class="example-form-field">
         <mat-label>Type</mat-label>
-        <input matInput type="text" [(ngModel)]="filter.type">
+        <input matInput type="text" [(ngModel)]="filter.type" (ngModelChange)="search()">
         @if (filter.type) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.type=''">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.type=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
         }
     </mat-form-field>
     </div>
+    <br>
     <div class="left">
     <span class="title">Sort:</span>
     <mat-form-field>
         <mat-label>Sort by:</mat-label>
-        <mat-select [(value)]="sort.sortBy">
+        <mat-select (selectionChange)="search()" [(value)]="sort.sortBy">
           <mat-option value="">None</mat-option>
           <mat-option value="name">Name</mat-option>
           <mat-option value="type">Type</mat-option>
@@ -33,19 +34,20 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label>Asc/Desc</mat-label>
-        <mat-select [(value)]="sort.ascending">
+        <mat-select (selectionChange)="search()"  [(value)]="sort.ascending">
           <mat-option value="true">Ascending</mat-option>
           <mat-option value="false">Descenging</mat-option>
         </mat-select>
     </mat-form-field>
-    <button class="search" mat-stroked-button (click)="search()">Search</button>
     </div>
 </div>
+<div class="table">
+<a [routerLink]="['create']">Create proficiency</a>
 <table mat-table [dataSource]="dataSource">
 
     <mat-text-column name="name" headerText="Name:" ></mat-text-column>
 
-    <mat-text-column name="type" headerText="Title:" ></mat-text-column>
+    <mat-text-column name="type" headerText="Type:" ></mat-text-column>
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
@@ -68,5 +70,6 @@
   [pageSizeOptions]="[5, 10, 20]"
   aria-label="Select page">
 </mat-paginator>
+</div>
 
   

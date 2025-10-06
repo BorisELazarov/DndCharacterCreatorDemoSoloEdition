@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ProficiencyService } from '../service/proficiency.service';
+import { Component, OnDestroy } from '@angular/core';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { CommonModule } from '@angular/common';
@@ -7,6 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-create-proficiency',
@@ -16,8 +17,10 @@ import { Router } from '@angular/router';
   templateUrl: './create-proficiency.component.html',
   styleUrl: './create-proficiency.component.css',
 })
-export class CreateProficiencyComponent {
-  protected createForm :FormGroup;
+export class CreateProficiencyComponent implements OnDestroy{
+  private destroy=new Subject<void>();
+  protected createForm:FormGroup;
+
   constructor(private proficiencyService: ProficiencyService,
     fb :FormBuilder, private router:Router) {
     this.createForm = fb.group({
@@ -34,11 +37,17 @@ export class CreateProficiencyComponent {
       type: type
     };
     if(this.createForm.valid){
-      this.proficiencyService.create(proficiency);
+      this.proficiencyService.create(proficiency).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/proficiencies');
     }
     else{
-      alert('Unvalid input!');
+      alert('Invalid input!');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

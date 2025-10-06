@@ -1,0 +1,13 @@
+
+<h1>My profile@if(profile?.isDeleted){(DEACTIVATED)}:</h1>
+<h2>Username:</h2><p>{{profile?.username}}</p>
+<h2>Email:</h2><p>{{profile?.email}}</p>
+@if(profile?.isDeleted){
+    <a [routerLink]="['']" (click)="restore()">Restore</a><br>
+    <a [routerLink]="['/home']" (click)="openDialog()">Delete</a>
+}@else {
+    <a [routerLink]="['change/username']">Change username</a><br>
+    <a [routerLink]="['change/email']">Change email</a><br>
+    <a [routerLink]="['change/password']">Change password</a><br>
+    <a [routerLink]="['']" (click)="openDialog()">Deactivate</a>
+}

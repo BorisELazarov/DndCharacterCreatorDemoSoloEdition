@@ -1,0 +1,15 @@
+.left{
+    float: left;
+    display: flexbox;
+}
+.title{
+    font-size: xx-large;
+}
+.search{
+    background-color: lightgrey;
+    margin-bottom: 3%;
+}
+.table{
+    float: left;
+    width: 100%;
+}

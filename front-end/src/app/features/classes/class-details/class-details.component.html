@@ -1,0 +1,28 @@
+<h1>Proficiency details:</h1>
+<h2>Name: {{dndClass?.name}}</h2>
+<h2>Type: {{dndClass?.hitDice}}</h2>
+<h2>Description:</h2>
+<p><span class="p-text">{{dndClass?.description}}</span></p>
+<a [routerLink]="['/classes/edit',dndClass?.id]">Edit</a><br>
+<a (click)="openDialog()">delete</a><br>
+<a [routerLink]="['/classes']">Back</a>
+<h1>Proficiencies:</h1>
+<div class="table">
+<table mat-table [dataSource]="dataSource">
+
+    <mat-text-column name="name" headerText="Name:" ></mat-text-column>
+
+    <mat-text-column name="type" headerText="Title:" ></mat-text-column>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+</table>
+<mat-paginator #paginator
+  [length]="dataSource.data.length"
+  [pageIndex]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20]"
+  aria-label="Select page">
+</mat-paginator>
+</div>
+

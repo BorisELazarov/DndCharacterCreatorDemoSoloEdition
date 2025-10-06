@@ -1,0 +1,11 @@
+.left{
+    float: left;
+    display: flexbox;
+}
+.title{
+    font-size: xx-large;
+}
+.table{
+    float: left;
+    width: 100%;
+}

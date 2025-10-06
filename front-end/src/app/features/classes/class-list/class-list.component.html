@@ -1,1 +1,76 @@
-<p>class-list works!</p>
+<h1>Classes:</h1>
+<div class="left">
+    <div class="left">
+    <span class="title">Filter:</span>
+    <mat-form-field class="example-form-field">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [(ngModel)]="filter.name" (ngModelChange)="search()">
+        @if (filter.name) {
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.name=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+    </mat-form-field>
+    <mat-form-field class="example-form-field">
+        <mat-label>Hit Dice</mat-label>
+        <mat-select [(value)]="filter.hitDice" (selectionChange)="search()">
+            <mat-option [value]="undefined">None</mat-option>
+            <mat-option value="D6">D6</mat-option>
+            <mat-option value="D8">D8</mat-option>
+            <mat-option value="D10">D10</mat-option>
+            <mat-option value="D12">D12</mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <br>
+    <div class="left">
+    <span class="title">Sort:</span>
+    <mat-form-field>
+        <mat-label>Sort by:</mat-label>
+        <mat-select [(value)]="sort.sortBy" (selectionChange)="search()">
+          <mat-option value="">None</mat-option>
+          <mat-option value="name">Name</mat-option>
+          <mat-option value="hitDice">Hit dice</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Asc/Desc</mat-label>
+        <mat-select [(value)]="sort.ascending" (selectionChange)="search()">
+          <mat-option value="true">Ascending</mat-option>
+          <mat-option value="false">Descenging</mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+</div>
+<div class="table">
+<a [routerLink]="['create']">Create class</a>
+<table mat-table [dataSource]="dataSource">
+
+    <mat-text-column name="name" headerText="Name:" ></mat-text-column>
+
+    <mat-text-column name="hitDice" headerText="Hit Dice:" ></mat-text-column>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-fab extended [routerLink]="['/classes',row.id]">
+            <mat-icon>info</mat-icon>
+            Details
+          </button>
+            
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+</table>
+<mat-paginator #paginator
+  [length]="dataSource.data.length"
+  [pageIndex]="0"
+  [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20]"
+  aria-label="Select page">
+</mat-paginator>
+</div>
+
+  
