@@ -18,32 +18,96 @@ Character creation
     </form>
   </mat-step>
     <mat-step [stepControl]="createFormGroup" errorMessage="You have to distribute your stats.">
+      <mat-form-field>
+        <mat-label>Stats choosing type:</mat-label>
+        <mat-select matInput [(value)]="statsType" placeholder="Choose your type of stats select">
+          <mat-option value="Custom">Custom</mat-option>
+          <mat-option value="Point buy" (onSelectionChange)="preparePointBuy()">Point buy</mat-option>
+          <mat-option value="Roll">Roll 4d6 drop lowest</mat-option>
+        </mat-select>
+      </mat-form-field>
+      @if (isPointBuy()) {
+        <mat-label>Stat points: {{statPoints}}</mat-label>
+      }
       <form [formGroup]="createFormGroup">
         <ng-template matStepLabel>Choose your stats</ng-template>
         <mat-form-field>
           <mat-label>Strength</mat-label>
           <input type="number" [min]="8" [max]="20" matInput placeholder="Strength"
-           formControlName="strength" required>
+           [value]="strength" required [readonly]="isNotCustom()">
+           @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Str")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Str")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Dexterity</mat-label>
-          <input type="number" [min]="8" [max]="20" matInput placeholder="Dexterity" formControlName="dexterity" required>
+          <input type="number" [min]="8" [max]="20" matInput placeholder="Dexterity"
+           [value]="dexterity" required [readonly]="isNotCustom()">
+           @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Dex")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Dex")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Constitution</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Constitution" formControlName="constitution" required>
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Constitution"
+           [value]="constitution" required [readonly]="isNotCustom()">
+           @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Con")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Con")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Intelligence</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Intelligence" formControlName="intelligence" required>
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Intelligence"
+           [value]="intelligence" required [readonly]="isNotCustom()">
+          @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Int")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Int")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Wisdom</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Wisdom" formControlName="wisdom" required>
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Wisdom"
+           [value]="wisdom" required [readonly]="isNotCustom()">
+           @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Wis")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Wis")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Charisma</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Charisma" formControlName="charisma" required>
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Charisma"
+           [value]="charisma" required [readonly]="isNotCustom()">
+           @if (isPointBuy()) {
+            <button mat-button [color]='upDownButtonHolderColor' (click)='increment("Cha")'>
+              <mat-icon>keyboard_arrow_up</mat-icon>
+            </button>
+            <button mat-button [color]='upDownButtonHolderColor' (click)='decrement("Cha")'>
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+           }
         </mat-form-field>
           <div>
             <button mat-button matStepperNext>Next</button>

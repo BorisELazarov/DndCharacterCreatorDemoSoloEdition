@@ -3,40 +3,44 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} f
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatStepperModule} from '@angular/material/stepper'
+import {MatStepperModule} from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { Subject, takeUntil } from 'rxjs';
+
 import { ClassService } from '../../../shared/services/class-service/class.service';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Spell } from '../../../shared/interfaces/spell';
-import { MatSelectModule } from '@angular/material/select';
-import { CommonModule } from '@angular/common';
 import { HitDice } from '../../../shared/enums/hit-dice';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
-import { Router } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../core/interfaces/user';
 import { CharacterService } from '../service/character.service';
 import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
-import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
-import { Subject, takeUntil } from 'rxjs';
+import { StatsSelect } from '../../../shared/enums/stats-select';
+import { MiscHolder } from '../../../core/misc/misc-holder';
+import { StatType } from '../../../shared/enums/stat-type';
 
 @Component({
   selector: 'app-character-creation',
   standalone: true,
   imports: [MatButtonModule, MatStepperModule,
-     MatFormFieldModule, MatInputModule, MatSelectModule,
+    MatFormFieldModule, MatInputModule, MatSelectModule,
     FormsModule, CommonModule, ReactiveFormsModule,
-  MatCardModule, MatListModule, MatCheckboxModule,
-  MatIconModule],
+    MatCardModule, MatListModule, MatCheckboxModule,
+    MatIconModule],
   templateUrl: './character-creation.component.html',
   styleUrl: './character-creation.component.css'
 })
 export class CharacterCreationComponent implements OnInit, OnDestroy{
-  protected disabled:boolean=true;
+
+  protected disabled: boolean = true;
+  protected upDownButtonHolderColor: string = MiscHolder.upDownButtonColor;
 
   private destroy=new Subject<void>();
 
@@ -46,6 +50,7 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   protected intelligence:number=8;
   protected wisdom:number=8;
   protected charisma:number=8;
+  protected statPoints: number = 27;
 
   protected spellLevel:number;
   protected spellName:string='';
@@ -58,6 +63,7 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   protected proficiencies:CharacterProficiency[]=[];
   protected nameList:string[]=[];
 
+  protected statsType: StatsSelect = StatsSelect.CUSTOM;
 
   selectedClass:DndClass={
     name:'',
@@ -71,17 +77,10 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   
   constructor (private classService:ClassService,
     private spellService:SpellService, fb:FormBuilder,
-    private characterService:CharacterService, private router:Router,
-    private localStorageService:LocalStorageService
+    private characterService:CharacterService, private router:Router
   ){
     this.spellLevel=0;
     this.createFormGroup =fb.group({
-      strength: [8, [Validators.required]],
-      dexterity: [8, Validators.required],
-      constitution: [8, Validators.required],
-      intelligence: [8, Validators.required],
-      wisdom: [8, Validators.required],
-      charisma: [8, Validators.required],
       spells: [[]],
       name:['',Validators.required],
       level:[1,[Validators.required,Validators.min(1),Validators.max(20)]]
@@ -117,12 +116,147 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     this.tools=this.selectedClass.proficiencies.filter(x=>x.type=='Tools');
   }
 
+  preparePointBuy(): void {
+    if (this.isPointBuy()) {
+      return;
+    }
+    this.statPoints = 27;
+    this.strength = 8;
+    this.dexterity = 8;
+    this.constitution = 8;
+    this.intelligence = 8;
+    this.wisdom = 8;
+    this.charisma = 8;
+  }
+
+  isPointBuy(): boolean {
+    return this.statsType === StatsSelect.POINT_BUY;
+  }
+
+  isNotCustom(): boolean {
+    return this.statsType !== StatsSelect.CUSTOM;
+  }
+
+  getPointsCostForIncr(stat: number): number {
+    return (stat > 12 ? 2 : 1);
+  }
+
+  canIncrement(stat: number): boolean {
+    return this.statPoints >= this.getPointsCostForIncr(stat) && stat < 15;
+  }
+
+  increment(statType: string): void {
+    switch (statType) {
+      case StatType.STR:
+          if (this.canIncrement(this.strength)) {
+            this.statPoints -= this.getPointsCostForIncr(this.strength);
+            this.strength++;
+          }
+        break;
+        
+      case StatType.DEX:
+          if (this.canIncrement(this.dexterity)) {
+            this.statPoints -= this.getPointsCostForIncr(this.dexterity);
+            this.dexterity++;
+          }
+        break;
+        
+      case StatType.CON:
+          if (this.canIncrement(this.constitution)) {
+            this.statPoints -= this.getPointsCostForIncr(this.constitution);
+            this.constitution++;
+          }
+        break;
+        
+      case StatType.INT:
+          if (this.canIncrement(this.intelligence)) {
+            this.statPoints -= this.getPointsCostForIncr(this.intelligence);
+            this.intelligence++;
+          }
+        break;
+        
+      case StatType.WIS:
+          if (this.canIncrement(this.wisdom)) {
+            this.statPoints -= this.getPointsCostForIncr(this.wisdom);
+            this.wisdom++;
+          }
+        break;
+
+      case StatType.CHA:
+          if (this.canIncrement(this.charisma)) {
+            this.statPoints -= this.getPointsCostForIncr(this.charisma);
+            this.charisma++;
+          }
+        break;
+    
+      default:
+        break;
+    }
+  } 
+
+  getPointsCostForDecr(stat: number): number {
+    return (stat < 14 ? 1 : 2);
+  }
+
+  canDecrement(stat:number): boolean {
+    return stat > 8;
+  }
+
+  decrement(statType: string): void {
+    switch (statType) {
+      case StatType.STR:
+          if (this.canDecrement(this.strength)) {
+            this.statPoints += this.getPointsCostForDecr(this.strength);
+            this.strength--;
+          }
+        break;
+        
+      case StatType.DEX:
+          if (this.canDecrement(this.dexterity)) {
+            this.statPoints += this.getPointsCostForDecr(this.dexterity);
+            this.dexterity--;
+          }
+        break;
+        
+      case StatType.CON:
+          if (this.canDecrement(this.constitution)) {
+            this.statPoints += this.getPointsCostForDecr(this.constitution);
+            this.constitution--;
+          }
+        break;
+        
+      case StatType.INT:
+          if (this.canDecrement(this.intelligence)) {
+            this.statPoints += this.getPointsCostForDecr(this.intelligence);
+            this.intelligence--;
+          }
+        break;
+        
+      case StatType.WIS:
+          if (this.canDecrement(this.wisdom)) {
+            this.statPoints += this.getPointsCostForDecr(this.wisdom);
+            this.wisdom--;
+          }
+        break;
+
+      case StatType.CHA:
+          if (this.canDecrement(this.charisma)) {
+            this.statPoints += this.getPointsCostForDecr(this.charisma);
+            this.charisma--;
+          }
+        break;
+    
+      default:
+        break;
+    }
+  }
+
   addProf(proficiency:Proficiency):void{
     if(this.proficiencies.filter(x=>x.proficiency.id===proficiency.id).length===0){
       this.proficiencies.push(
         {
-      proficiency:proficiency,
-      expertise:false
+          proficiency:proficiency,
+          expertise:false
         }
       );
     }
@@ -200,12 +334,12 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
       let character:Character={
         name:this.createFormGroup.controls['name'].value,
         level:this.createFormGroup.controls['level'].value,
-        baseStr:this.createFormGroup.controls['strength'].value,
-        baseDex:this.createFormGroup.controls['dexterity'].value,
-        baseCon:this.createFormGroup.controls['constitution'].value,
-        baseInt:this.createFormGroup.controls['intelligence'].value,
-        baseWis:this.createFormGroup.controls['wisdom'].value,
-        baseCha:this.createFormGroup.controls['charisma'].value,
+        baseStr:this.strength,
+        baseDex:this.dexterity,
+        baseCon:this.constitution,
+        baseInt:this.intelligence,
+        baseWis:this.wisdom,
+        baseCha:this.charisma,
         dndClass:this.selectedClass,
         proficiencies:this.proficiencies,
         spells:this.createFormGroup.controls['spells'].value
