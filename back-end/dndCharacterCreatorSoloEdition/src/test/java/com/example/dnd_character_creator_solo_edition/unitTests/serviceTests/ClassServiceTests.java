@@ -116,8 +116,7 @@ class ClassServiceTests {
         ).thenReturn(
                 classDTOS.stream().filter(x->!x.isDeleted()).toList()
         );
-        List<ClassDTO> dtos=service.getClasses(false, Optional.empty(),
-                Optional.empty(), Optional.empty(), true);
+        List<ClassDTO> dtos=service.getClasses(false, null);
         assertFalse(dtos.isEmpty());
     }
 

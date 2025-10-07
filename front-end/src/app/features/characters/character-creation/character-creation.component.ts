@@ -23,7 +23,6 @@ import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
 import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
-import { UsersService } from '../../../core/services/user-service/users.service';
 
 @Component({
   selector: 'app-character-creation',
@@ -72,7 +71,6 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   
   constructor (private classService:ClassService,
     private spellService:SpellService, fb:FormBuilder,
-    private userService:UsersService,
     private characterService:CharacterService, private router:Router,
     private localStorageService:LocalStorageService
   ){
@@ -123,8 +121,8 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     if(this.proficiencies.filter(x=>x.proficiency.id===proficiency.id).length===0){
       this.proficiencies.push(
         {
-          proficiency:proficiency,
-          expertise:false
+      proficiency:proficiency,
+      expertise:false
         }
       );
     }
@@ -199,35 +197,26 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
 
   submit():void {
     if(this.createFormGroup.valid){
-    this.userService.getById(
-      this.localStorageService.getItem("id")!
-    ).pipe(
-      takeUntil(this.destroy)
-    ).subscribe(response=>
-    {
-        let user:User=response.body!;
-          let character:Character={
-            name:this.createFormGroup.controls['name'].value,
-            level:this.createFormGroup.controls['level'].value,
-            user:user,
-            baseStr:this.createFormGroup.controls['strength'].value,
-            baseDex:this.createFormGroup.controls['dexterity'].value,
-            baseCon:this.createFormGroup.controls['constitution'].value,
-            baseInt:this.createFormGroup.controls['intelligence'].value,
-            baseWis:this.createFormGroup.controls['wisdom'].value,
-            baseCha:this.createFormGroup.controls['charisma'].value,
-            dndClass:this.selectedClass,
-            proficiencies:this.proficiencies,
-            spells:this.createFormGroup.controls['spells'].value
-          }
-          this.characterService.create(character).pipe(
-            takeUntil(this.destroy)
-          ).subscribe(
-            response=>{
-              this.router.navigateByUrl('characters/sheet/'+response.id);
-            }
-          );
-    });
+      let character:Character={
+        name:this.createFormGroup.controls['name'].value,
+        level:this.createFormGroup.controls['level'].value,
+        baseStr:this.createFormGroup.controls['strength'].value,
+        baseDex:this.createFormGroup.controls['dexterity'].value,
+        baseCon:this.createFormGroup.controls['constitution'].value,
+        baseInt:this.createFormGroup.controls['intelligence'].value,
+        baseWis:this.createFormGroup.controls['wisdom'].value,
+        baseCha:this.createFormGroup.controls['charisma'].value,
+        dndClass:this.selectedClass,
+        proficiencies:this.proficiencies,
+        spells:this.createFormGroup.controls['spells'].value
+      }
+      this.characterService.create(character).pipe(
+        takeUntil(this.destroy)
+      ).subscribe(
+        response=>{
+          this.router.navigateByUrl('characters/sheet/'+response.id);
+        }
+      );
     }
   }
 

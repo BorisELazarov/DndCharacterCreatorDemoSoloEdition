@@ -4,8 +4,6 @@ import com.example.dnd_character_creator_solo_edition.dal.entities.*;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Character;
 import com.example.dnd_character_creator_solo_edition.dal.repos.CharacterRepo;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ClassRepo;
-import com.example.dnd_character_creator_solo_edition.dal.repos.RoleRepo;
-import com.example.dnd_character_creator_solo_edition.dal.repos.UserRepo;
 import com.example.dnd_character_creator_solo_edition.enums.HitDiceEnum;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,23 +29,19 @@ class CharacterRepoTests {
 
     @BeforeAll
     static void seedData(@Autowired CharacterRepo seedRepo,
-                         @Autowired ClassRepo classRepo,
-                         @Autowired UserRepo userRepo,
-                         @Autowired RoleRepo roleRepo){
-        seedUser(userRepo,roleRepo);
+                         @Autowired ClassRepo classRepo){
         seedClasses(classRepo);
         List<Character> characters=new LinkedList<>();
-        User user=userRepo.findAll().get(0);
         DNDclass dnDclass=classRepo.findAll().get(0);
         characters.add(getCharacter(true, "Norman", (byte)20,
                 (byte)20, (byte)20, (byte) 20,
-                (byte) 20, (byte) 20, (byte) 20,user,dnDclass));
+                (byte) 20, (byte) 20, (byte) 20,dnDclass));
         characters.add(getCharacter(false, "Morgan", (byte)2,
                 (byte)12, (byte)16, (byte) 10,
-                (byte) 14, (byte) 8, (byte) 14,user,dnDclass));
+                (byte) 14, (byte) 8, (byte) 14,dnDclass));
         characters.add(getCharacter(false, "Jordan", (byte)3,
                 (byte) 14, (byte) 8, (byte) 14,
-                (byte)12, (byte)16, (byte) 10,user,dnDclass));
+                (byte)12, (byte)16, (byte) 10,dnDclass));
         seedRepo.saveAll(characters);
     }
 
@@ -55,8 +49,7 @@ class CharacterRepoTests {
                                   byte level, byte baseStr,
                                   byte baseDex, byte baseCon,
                                   byte baseInt, byte baseWis,
-                                  byte baseCha, User user,
-                                  DNDclass dnDclass){
+                                  byte baseCha, DNDclass dnDclass){
         Character character=new Character();
         character.setIsDeleted(isDeleted);
         character.setName(name);
@@ -67,23 +60,8 @@ class CharacterRepoTests {
         character.setBaseInt(baseInt);
         character.setBaseWis(baseWis);
         character.setBaseCha(baseCha);
-        character.setUser(user);
         character.setDNDclass(dnDclass);
         return character;
-    }
-
-    static void seedUser(UserRepo userRepo, RoleRepo roleRepo){
-        User user=new User();
-        user.setRole(seedRole(roleRepo));
-        user.setUsername("sadj[");
-        user.setPassword("asfda");
-        userRepo.save(user);
-    }
-
-    private static Role seedRole(RoleRepo roleRepo) {
-        Role role=new Role();
-        roleRepo.save(role);
-        return role;
     }
 
     static void seedClasses(ClassRepo seedRepo) {
@@ -127,12 +105,8 @@ class CharacterRepoTests {
 
     @AfterAll
     static void rootData(@Autowired CharacterRepo rootRepo,
-                         @Autowired ClassRepo classRepo,
-                         @Autowired UserRepo userRepo,
-                         @Autowired RoleRepo roleRepo){
+                         @Autowired ClassRepo classRepo){
         rootRepo.deleteAll();
         classRepo.deleteAll();
-        userRepo.deleteAll();
-        roleRepo.deleteAll();
     }
 }

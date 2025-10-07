@@ -20,13 +20,6 @@ class CharacterSpellMapperTests {
             new CharacterSpellMapperImpl(spellMapper);
     @Test
     void fromDto() {
-        Role role=new Role();
-        role.setTitle("role");
-        User user=new User();
-        user.setId(1L);
-        user.setUsername("username");
-        user.setPassword("password");
-        user.setRole(role);
         DNDclass dclass=new DNDclass();
         dclass.setId(5L);
         dclass.setName("Wizard");
@@ -35,7 +28,6 @@ class CharacterSpellMapperTests {
         Character character=new Character();
         character.setId(4L);
         character.setName("Vankata");
-        character.setUser(user);
         character.setDNDclass(dclass);
         character.setLevel((byte)2);
         character.setBaseStr((byte)12);

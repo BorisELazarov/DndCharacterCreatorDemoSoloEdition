@@ -2,7 +2,6 @@ package com.example.dnd_character_creator_solo_edition.bll.dtos.characters;
 
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.spells.SpellDTO;
-import com.example.dnd_character_creator_solo_edition.bll.dtos.users.UserDTO;
 import jakarta.validation.constraints.*;
 
 import java.util.Optional;
@@ -14,8 +13,6 @@ public record CharacterDTO(
         @Size(min = 3, max = 50)
         @NotNull(message = "Name must not be empty")
         String name,
-        @NotNull
-        UserDTO user,
         @NotNull
         ClassDTO dndClass,
         @Min(value = 1, message = "Level must be above 0")

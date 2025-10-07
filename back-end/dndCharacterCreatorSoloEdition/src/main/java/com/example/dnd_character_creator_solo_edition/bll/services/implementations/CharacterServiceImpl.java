@@ -6,9 +6,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Cha
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.CharacterService;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Character;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
-import com.example.dnd_character_creator_solo_edition.dal.entities.User;
 import com.example.dnd_character_creator_solo_edition.dal.repos.CharacterRepo;
-import com.example.dnd_character_creator_solo_edition.dal.repos.RoleRepo;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
@@ -27,16 +25,13 @@ import java.util.Optional;
 public class CharacterServiceImpl implements CharacterService {
     private static final String NOT_FOUND_MESSAGE = "The character is not found!";
     private static final String NAME_TAKEN_MESSAGE = "There is already character named like that!";
-    private final RoleRepo roleRepo;
     private final CharacterRepo characterRepo;
     private final CharacterMapper mapper;
     @PersistenceContext
     private EntityManager em;
 
     public CharacterServiceImpl(@NotNull CharacterRepo characterRepo,
-                                @NotNull CharacterMapper mapper,
-                                @NotNull RoleRepo roleRepo) {
-        this.roleRepo = roleRepo;
+                                @NotNull CharacterMapper mapper) {
         this.characterRepo = characterRepo;
         this.mapper = mapper;
     }
@@ -50,28 +45,21 @@ public class CharacterServiceImpl implements CharacterService {
         Root<Character> root= criteriaQuery.from(Character.class);
         Byte levelParam= searchCharacterDTO.filter().level().orElse((byte)0);
         Join<Character, DNDclass> joinClasses= root.join("dndClass", JoinType.INNER);
-        Join<Character, User> joinUsers= root.join("user", JoinType.INNER);
         criteriaQuery.select(root)
                 .where(cb.and(
                         cb.and(
                             cb.like(root.get("name"),cb.parameter(String.class,"name")),
                             cb.like(joinClasses.get("name"),cb.parameter(String.class,"dndClassName"))
                         ),
-                        cb.and(
-                                cb.or(
-                                        cb.isTrue(
-                                                cb.literal(
-                                                        searchCharacterDTO.filter().level().isEmpty()
-                                                )
-                                        ),
-                                        cb.equal(
-                                                root.get("level"),
-                                                levelParam
+                        cb.or(
+                                cb.isTrue(
+                                        cb.literal(
+                                                searchCharacterDTO.filter().level().isEmpty()
                                         )
                                 ),
-                                cb.and(
-                                        cb.equal(joinUsers.get("id"),userId),
-                                        cb.equal(root.get("isDeleted"),isDeleted)
+                                cb.equal(
+                                        root.get("level"),
+                                        levelParam
                                 )
                         )
                 ));
@@ -102,10 +90,7 @@ public class CharacterServiceImpl implements CharacterService {
     public CharacterDTO addCharacter(CharacterDTO dcharacterDTO) {
         if (characterRepo.findByName(dcharacterDTO.name()).isPresent())
             throw new NameAlreadyTakenException(NAME_TAKEN_MESSAGE);
-        Character character = characterRepo.save(mapper.fromDto(
-                dcharacterDTO,
-                roleRepo.findByTitle(dcharacterDTO.user().role())
-        ));
+        Character character = characterRepo.save(mapper.fromDto(dcharacterDTO));
         return mapper.toDto(character);
     }
 
@@ -126,10 +111,7 @@ public class CharacterServiceImpl implements CharacterService {
                         }
                     }
             );
-            characterRepo.save(
-                    mapper.fromDto(characterDTO,
-                            Optional.of(character.get().getUser().getRole())
-                    ));
+            characterRepo.save(mapper.fromDto(characterDTO));
         } else {
             throw new NotFoundException(NOT_FOUND_MESSAGE);
         }

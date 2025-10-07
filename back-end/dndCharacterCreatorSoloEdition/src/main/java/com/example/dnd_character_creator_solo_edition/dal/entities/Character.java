@@ -13,9 +13,6 @@ public class Character extends BaseEntity implements Serializable {
     @Column(name="name", nullable = false, length = 50)
     private String name;
     @ManyToOne
-    @JoinColumn(name="user_id", nullable = false)
-    private User user;
-    @ManyToOne
     @JoinColumn(name="class_id", nullable = false)
     private DNDclass dndClass;
     @Column(name="level", nullable = false)
@@ -48,14 +45,6 @@ public class Character extends BaseEntity implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public DNDclass getDNDclass() {

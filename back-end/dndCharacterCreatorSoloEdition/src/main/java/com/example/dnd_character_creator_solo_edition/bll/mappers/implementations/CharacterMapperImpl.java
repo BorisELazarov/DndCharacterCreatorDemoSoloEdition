@@ -13,15 +13,13 @@ import java.util.*;
 
 @Component
 public class CharacterMapperImpl implements CharacterMapper {
-    private final UserMapper userMapper;
     private final ClassMapper classMapper;
     private final ProficiencyCharacterMapper charProfMapper;
     private final CharacterSpellMapper characterSpellMapper;
 
-    public CharacterMapperImpl(@NotNull UserMapper userMapper, @NotNull  ClassMapper classMapper,
+    public CharacterMapperImpl(@NotNull  ClassMapper classMapper,
                                @NotNull ProficiencyCharacterMapper charProfMapper,
                                @NotNull CharacterSpellMapper characterSpellMapper) {
-        this.userMapper = userMapper;
         this.classMapper = classMapper;
         this.charProfMapper = charProfMapper;
         this.characterSpellMapper = characterSpellMapper;
@@ -30,7 +28,7 @@ public class CharacterMapperImpl implements CharacterMapper {
 
 
     @Override
-    public Character fromDto(CharacterDTO dto, Optional<Role> role) {
+    public Character fromDto(CharacterDTO dto) {
         if (dto.name().isEmpty())
             throw new IllegalArgumentException("Character's name must not be null");
         Character character = new Character();
@@ -44,7 +42,6 @@ public class CharacterMapperImpl implements CharacterMapper {
         character.setBaseInt(dto.baseInt());
         character.setBaseWis(dto.baseWis());
         character.setBaseCha(dto.baseCha());
-        character.setUser(userMapper.fromDto(dto.user(), role));
         character.setDNDclass(classMapper.fromDto(dto.dndClass()));
         character.setProficiencyCharacters(getProficiencyCharacters(dto.proficiencies(), character));
         character.setCharacterSpells(getCharacterSpells(dto.spells(),character));
@@ -69,7 +66,6 @@ public class CharacterMapperImpl implements CharacterMapper {
                 entity.getId().describeConstable(),
                 entity.getIsDeleted(),
                 entity.getName(),
-                userMapper.toDto(entity.getUser()),
                 classMapper.toDto(entity.getDNDclass()),
                 entity.getLevel(),
                 entity.getBaseStr(),

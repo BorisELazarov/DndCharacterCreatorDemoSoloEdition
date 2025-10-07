@@ -3,7 +3,6 @@ import com.example.dnd_character_creator_solo_edition.exceptions.customs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,13 +20,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public @ResponseBody ErrorResponse handleException(BadCredentialsException ex){
-        logger.error(ex.getMessage(),ex);
-        return new ErrorResponse(HttpStatus.FORBIDDEN.value(), "Wrong email or password!");
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleException(NotSoftDeletedException ex){
         logger.error(ex.getMessage(),ex);
@@ -39,20 +31,6 @@ public class GlobalExceptionHandler {
     public @ResponseBody ErrorResponse handleException(NameAlreadyTakenException ex){
         logger.warn(ex.getMessage(),ex);
         return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public @ResponseBody ErrorResponse handleException(EmailAlreadyTakenException ex){
-        logger.warn(ex.getMessage(),ex);
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public @ResponseBody ErrorResponse handleException(WrongPasswordException ex){
-        logger.warn(ex.getMessage(), ex);
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
 
     @ExceptionHandler
