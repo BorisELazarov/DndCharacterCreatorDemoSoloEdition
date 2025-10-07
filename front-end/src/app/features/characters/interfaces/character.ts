@@ -7,7 +7,6 @@ import { CharacterProficiency } from "./character-proficiency";
 export interface Character {
     id?:number,
     name:string,
-    user:User,
     level:number,
     baseStr:number,
     baseDex:number,

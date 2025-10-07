@@ -4,23 +4,6 @@ create database dnddb;
 
 use dnddb;
 
-create table roles(
-id int primary key auto_increment,
-title nvarchar(20) not null default 'user'
-);
-
-create table users(
-id bigint primary key auto_increment,
-username nvarchar(50) not null,
-password nvarchar(64) not null,
-email nvarchar(320) not null,
-is_deleted bit not null default 0,
-role_id int null,
-foreign key(role_id)
-references roles(id),
-unique(email)
-);
-
 create table classes(
 id bigint primary key auto_increment,
 name nvarchar(50) not null,
@@ -32,9 +15,6 @@ is_deleted bit not null default 0
 CREATE TABLE characters(
 id bigint primary key auto_increment,
 name nvarchar(50) not null,
-user_id bigint not null,
-foreign key(user_id)
-references users(id),
 class_id bigint not null,
 foreign key(class_id)
 references classes(id),
