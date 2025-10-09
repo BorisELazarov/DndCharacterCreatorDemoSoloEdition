@@ -18,32 +18,178 @@ Character creation
     </form>
   </mat-step>
     <mat-step [stepControl]="createFormGroup" errorMessage="You have to distribute your stats.">
+      <mat-form-field>
+        <mat-label>Stats choosing type:</mat-label>
+        <mat-select matInput [(value)]="statsType" placeholder="Choose your type of stats select">
+          <mat-option value="Custom">Custom</mat-option>
+          <mat-option value="Point buy" (onSelectionChange)="preparePointBuy()">Point buy</mat-option>
+          <mat-option value="Roll" (onSelectionChange)="prepareRandomRoll()">Roll 4d6 drop lowest</mat-option>
+        </mat-select>
+      </mat-form-field>
+      @if (isPointBuy()) {
+        <mat-label>Stat points: {{statPoints}}</mat-label>
+      }
+      @if (isRoll()) {
+        <button mat-button (click)="rollStats()">Reroll stats</button>
+      }
       <form [formGroup]="createFormGroup">
         <ng-template matStepLabel>Choose your stats</ng-template>
         <mat-form-field>
           <mat-label>Strength</mat-label>
-          <input type="number" [min]="8" [max]="20" matInput placeholder="Strength"
-           formControlName="strength" required>
+           @if (isRoll()) {
+            <mat-select [(value)]="strength.value" (selectionChange)="chooseRoll(strength)" required>
+                @for (item of strength.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="strength.prevValue" [ariaSelected]="true">
+                  {{strength.prevValue}}
+                </mat-option>
+              </mat-select>
+              } @else {
+                <input type="number" matInput [min]="8" [max]="20" placeholder="strength"
+                  [value]="strength.value" required [readonly]="isNotCustom()">
+                @if (isPointBuy()) {
+                <button mat-button [color]='upDownButtonHolderColor' (click)='increment(strength)'>
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(strength)'>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+              }
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Dexterity</mat-label>
-          <input type="number" [min]="8" [max]="20" matInput placeholder="Dexterity" formControlName="dexterity" required>
+           @if (isRoll()) {
+            <mat-select [(value)]="dexterity.value" (selectionChange)="chooseRoll(dexterity)" required>
+                @for (item of dexterity.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="dexterity.prevValue" [ariaSelected]="true">
+                  {{dexterity.prevValue}}
+                </mat-option>
+              </mat-select>
+              } @else {
+                <input type="number" matInput [min]="8" [max]="20" placeholder="dexterity"
+                  [value]="dexterity.value" required [readonly]="isNotCustom()">
+                @if (isPointBuy()) {
+                <button mat-button [color]='upDownButtonHolderColor' (click)='increment(dexterity)'>
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(dexterity)'>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+              }
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Constitution</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Constitution" formControlName="constitution" required>
+           @if (isRoll()) {
+            <mat-select [(value)]="constitution.value" (selectionChange)="chooseRoll(constitution)" required>
+                @for (item of constitution.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="constitution.prevValue" [ariaSelected]="true">
+                  {{constitution.prevValue}}
+                </mat-option>
+              </mat-select>
+              } @else {
+                <input type="number" matInput [min]="8" [max]="20" placeholder="constitution"
+                  [value]="constitution.value" required [readonly]="isNotCustom()">
+                @if (isPointBuy()) {
+                <button mat-button [color]='upDownButtonHolderColor' (click)='increment(constitution)'>
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(constitution)'>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+              }
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Intelligence</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Intelligence" formControlName="intelligence" required>
+           @if (isRoll()) {
+            <mat-select [(value)]="intelligence.value" (selectionChange)="chooseRoll(intelligence)" required>
+                @for (item of intelligence.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="intelligence.prevValue" [ariaSelected]="true">
+                  {{intelligence.prevValue}}
+                </mat-option>
+              </mat-select>
+              } @else {
+                <input type="number" matInput [min]="8" [max]="20" placeholder="intelligence"
+                  [value]="intelligence.value" required [readonly]="isNotCustom()">
+                @if (isPointBuy()) {
+                <button mat-button [color]='upDownButtonHolderColor' (click)='increment(intelligence)'>
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(intelligence)'>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+              }
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Wisdom</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Wisdom" formControlName="wisdom" required>
+           @if (isRoll()) {
+            <mat-select [(value)]="wisdom.value" (selectionChange)="chooseRoll(wisdom)" required>
+                @for (item of wisdom.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="wisdom.prevValue" [ariaSelected]="true">
+                  {{wisdom.prevValue}}
+                </mat-option>
+              </mat-select>
+              } @else {
+                <input type="number" matInput [min]="8" [max]="20" placeholder="Wisdom"
+                  [value]="wisdom.value" required [readonly]="isNotCustom()">
+                @if (isPointBuy()) {
+                <button mat-button [color]='upDownButtonHolderColor' (click)='increment(wisdom)'>
+                  <mat-icon>keyboard_arrow_up</mat-icon>
+                </button>
+                <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(wisdom)'>
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+              }
+           }
         </mat-form-field>
         <mat-form-field>
           <mat-label>Charisma</mat-label>
-          <input type="number" matInput [min]="8" [max]="20" placeholder="Charisma" formControlName="charisma" required>
+          @if (isRoll()) {
+            <mat-select [title]="charisma.value" (selectionChange)="chooseRoll(charisma)" required>
+                @for (item of charisma.options; track $index) {
+                  <mat-option [value]="item">
+                    {{item}}
+                  </mat-option>
+                }
+                <mat-option [value]="charisma.prevValue" [ariaSelected]="true">
+                  {{charisma.prevValue}}
+                </mat-option>
+              </mat-select>
+          } @else {
+            <input type="number" matInput [min]="8" [max]="20" placeholder="Charisma"
+              [value]="charisma.value" required [readonly]="isNotCustom()">
+            @if (isPointBuy()) {
+              <button mat-button [color]='upDownButtonHolderColor' (click)='increment(charisma)'>
+                <mat-icon>keyboard_arrow_up</mat-icon>
+              </button>
+              <button mat-button [color]='upDownButtonHolderColor' (click)='decrement(charisma)'>
+                <mat-icon>keyboard_arrow_down</mat-icon>
+              </button>
+            }
+          }
+           
         </mat-form-field>
           <div>
             <button mat-button matStepperNext>Next</button>
