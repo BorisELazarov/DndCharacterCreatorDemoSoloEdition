@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} f
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatStepperModule} from '@angular/material/stepper';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -24,7 +24,8 @@ import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
 import { StatsSelect } from '../../../shared/enums/stats-select';
 import { MiscHolder } from '../../../core/misc/misc-holder';
-import { StatType } from '../../../shared/enums/stat-type';
+import { CommonMethods } from '../../../core/misc/common-methods';
+import { Stat } from '../misc/stat';
 
 @Component({
   selector: 'app-character-creation',
@@ -44,13 +45,15 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
 
   private destroy=new Subject<void>();
 
-  protected strength:number=8;
-  protected dexterity:number=8;
-  protected constitution:number=8;
-  protected intelligence:number=8;
-  protected wisdom:number=8;
-  protected charisma:number=8;
+  protected strength:Stat;
+  protected dexterity:Stat;
+  protected constitution:Stat;
+  protected intelligence:Stat;
+  protected wisdom:Stat;
+  protected charisma:Stat;
+
   protected statPoints: number = 27;
+  protected statRolls: number[] = [];
 
   protected spellLevel:number;
   protected spellName:string='';
@@ -85,9 +88,25 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
       name:['',Validators.required],
       level:[1,[Validators.required,Validators.min(1),Validators.max(20)]]
     });
+    this.strength = new Stat();
+    this.dexterity = new Stat();
+    this.constitution = new Stat();
+    this.intelligence = new Stat();
+    this.wisdom = new Stat();
+    this.charisma = new Stat();
+  }
+
+  resetStats(): void {
+    this.strength.value = 8;
+    this.dexterity.value = 8;
+    this.constitution.value = 8;
+    this.intelligence.value = 8;
+    this.wisdom.value = 8;
+    this.charisma.value = 8;
   }
 
   ngOnInit(): void {
+    this.resetStats();
     this.classService.getAllUnfiltered().pipe(
       takeUntil(this.destroy)
     ).subscribe(response=>
@@ -121,12 +140,91 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
       return;
     }
     this.statPoints = 27;
-    this.strength = 8;
-    this.dexterity = 8;
-    this.constitution = 8;
-    this.intelligence = 8;
-    this.wisdom = 8;
-    this.charisma = 8;
+    this.resetStats();
+  }
+
+  rollD6(): number {
+    return CommonMethods.random(1,6);
+  }
+
+  roll4D6(): number[] {
+    const d6s: number[] = [];
+    for (let index = 0; index < 4; index++) {
+      d6s.push(this.rollD6());
+    } 
+    return d6s;
+  }
+
+  rollStats(): void {
+    this.statRolls = [];
+    for (let index = 0; index < 6; index++) {
+      const d6s = this.roll4D6().sort((a,b) => b-a);
+      d6s.pop();
+      this.statRolls.push(d6s.reduce((a,b) => a+b));
+    }
+    this.statRolls.sort();
+    this.prepareRandomStat(this.strength);
+    this.prepareRandomStat(this.dexterity);
+    this.prepareRandomStat(this.constitution);
+    this.prepareRandomStat(this.intelligence);
+    this.prepareRandomStat(this.wisdom);
+    this.prepareRandomStat(this.charisma);
+  }
+
+  prepareRandomStat(stat: Stat): void {
+    stat.value = 0;
+    stat.prevValue = 0;
+    stat.options.splice(0);
+    this.statRolls.forEach(
+      function (item:number) {
+        stat.options.push(item);
+      }
+    );
+    this.statRolls.sort();
+  }
+
+  prepareRandomRoll(): void {
+    if (this.isRoll()) {
+      return;
+    }
+    this.rollStats();
+  }
+
+  removeFirstFromArray(array: number[], value: number): void {
+    array.splice(array.indexOf(value), 1);
+  }
+
+  removeFromAllRollOptions(value: number): void {
+    this.removeFirstFromArray(this.strength.options, value);
+    this.removeFirstFromArray(this.dexterity.options, value);
+    this.removeFirstFromArray(this.constitution.options, value);
+    this.removeFirstFromArray(this.intelligence.options, value);
+    this.removeFirstFromArray(this.wisdom.options, value);
+    this.removeFirstFromArray(this.charisma.options, value);
+  }
+
+  addToAllRollOptions(value:number): void {
+    this.strength.options.push(value);
+    this.dexterity.options.push(value);
+    this.constitution.options.push(value);
+    this.intelligence.options.push(value);
+    this.wisdom.options.push(value);
+    this.charisma.options.push(value);
+  }
+
+  chooseRoll(stat: Stat): void {
+    if (stat.value === stat.prevValue) {
+      return;
+    }
+    if (stat.prevValue > 0) {
+      this.addToAllRollOptions(stat.prevValue);
+    }
+    this.removeFromAllRollOptions(stat.value);
+    stat.prevValue = stat.value;
+  }
+
+  isRoll(): boolean {
+    return this.statsType === StatsSelect.ROLL;
   }
 
   isPointBuy(): boolean {
@@ -145,52 +243,10 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     return this.statPoints >= this.getPointsCostForIncr(stat) && stat < 15;
   }
 
-  increment(statType: string): void {
-    switch (statType) {
-      case StatType.STR:
-          if (this.canIncrement(this.strength)) {
-            this.statPoints -= this.getPointsCostForIncr(this.strength);
-            this.strength++;
-          }
-        break;
-        
-      case StatType.DEX:
-          if (this.canIncrement(this.dexterity)) {
-            this.statPoints -= this.getPointsCostForIncr(this.dexterity);
-            this.dexterity++;
-          }
-        break;
-        
-      case StatType.CON:
-          if (this.canIncrement(this.constitution)) {
-            this.statPoints -= this.getPointsCostForIncr(this.constitution);
-            this.constitution++;
-          }
-        break;
-        
-      case StatType.INT:
-          if (this.canIncrement(this.intelligence)) {
-            this.statPoints -= this.getPointsCostForIncr(this.intelligence);
-            this.intelligence++;
-          }
-        break;
-        
-      case StatType.WIS:
-          if (this.canIncrement(this.wisdom)) {
-            this.statPoints -= this.getPointsCostForIncr(this.wisdom);
-            this.wisdom++;
-          }
-        break;
-
-      case StatType.CHA:
-          if (this.canIncrement(this.charisma)) {
-            this.statPoints -= this.getPointsCostForIncr(this.charisma);
-            this.charisma++;
-          }
-        break;
-    
-      default:
-        break;
+  increment(stat: Stat): void {
+    if (this.canIncrement(stat.value)) {
+     this.statPoints -= this.getPointsCostForIncr(stat.value);
+       stat.value++;
     }
   } 
 
@@ -202,52 +258,10 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     return stat > 8;
   }
 
-  decrement(statType: string): void {
-    switch (statType) {
-      case StatType.STR:
-          if (this.canDecrement(this.strength)) {
-            this.statPoints += this.getPointsCostForDecr(this.strength);
-            this.strength--;
-          }
-        break;
-        
-      case StatType.DEX:
-          if (this.canDecrement(this.dexterity)) {
-            this.statPoints += this.getPointsCostForDecr(this.dexterity);
-            this.dexterity--;
-          }
-        break;
-        
-      case StatType.CON:
-          if (this.canDecrement(this.constitution)) {
-            this.statPoints += this.getPointsCostForDecr(this.constitution);
-            this.constitution--;
-          }
-        break;
-        
-      case StatType.INT:
-          if (this.canDecrement(this.intelligence)) {
-            this.statPoints += this.getPointsCostForDecr(this.intelligence);
-            this.intelligence--;
-          }
-        break;
-        
-      case StatType.WIS:
-          if (this.canDecrement(this.wisdom)) {
-            this.statPoints += this.getPointsCostForDecr(this.wisdom);
-            this.wisdom--;
-          }
-        break;
-
-      case StatType.CHA:
-          if (this.canDecrement(this.charisma)) {
-            this.statPoints += this.getPointsCostForDecr(this.charisma);
-            this.charisma--;
-          }
-        break;
-    
-      default:
-        break;
+  decrement(stat: Stat): void {
+    if (this.canDecrement(stat.value)) {
+      this.statPoints += this.getPointsCostForDecr(stat.value);
+      stat.value--;
     }
   }
 
@@ -334,12 +348,12 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
       let character:Character={
         name:this.createFormGroup.controls['name'].value,
         level:this.createFormGroup.controls['level'].value,
-        baseStr:this.strength,
-        baseDex:this.dexterity,
-        baseCon:this.constitution,
-        baseInt:this.intelligence,
-        baseWis:this.wisdom,
-        baseCha:this.charisma,
+        baseStr:this.strength.value,
+        baseDex:this.dexterity.value,
+        baseCon:this.constitution.value,
+        baseInt:this.intelligence.value,
+        baseWis:this.wisdom.value,
+        baseCha:this.charisma.value,
         dndClass:this.selectedClass,
         proficiencies:this.proficiencies,
         spells:this.createFormGroup.controls['spells'].value
