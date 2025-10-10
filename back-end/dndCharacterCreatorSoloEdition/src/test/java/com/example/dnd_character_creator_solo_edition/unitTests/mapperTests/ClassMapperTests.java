@@ -9,6 +9,8 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.enums.HitDiceEnum;
+import com.example.dnd_character_creator_solo_edition.enums.ProfSubType;
+import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,13 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ClassMapperTests {
     private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl();
     private final ClassMapper classMapper=new ClassMapperImpl(proficiencyMapper);
-    private ProficiencyDTO getProficiencyDTO(Long id, boolean isDeleted,
-                                             String name, String type){
-        return new ProficiencyDTO(Optional.of(id), isDeleted, name,type);
+    private ProficiencyDTO getProficiencyDTO(Long id, boolean isDeleted, String name, ProfType type, ProfSubType subType) {
+        return new ProficiencyDTO(Optional.of(id), isDeleted, name, type, subType);
     }
 
     private Proficiency getProficiency(Long id, boolean isDeleted,
-                                       String name, String type){
+                                       String name, ProfType type){
         Proficiency proficiency=new Proficiency();
         if (id!=null)
             proficiency.setId(id);
@@ -39,9 +40,9 @@ class ClassMapperTests {
     @Test
     void fromDtoAreEqual(){
         List<ProficiencyDTO> proficiencyDTOS=List.of(
-                getProficiencyDTO(1L,false,"athletics","skill"),
-                getProficiencyDTO(6L,false,"martial","weapons"),
-                getProficiencyDTO(8L,true,"heavy","armor")
+                getProficiencyDTO(1L,false,"athletics", ProfType.SKILL, null),
+                getProficiencyDTO(6L,false,"martial", ProfType.WEAPON, null),
+                getProficiencyDTO(8L,true,"heavy", ProfType.ARMOR, null)
         );
         ClassDTO dto=new ClassDTO(Optional.of(57L),
                 false, "fighter",
@@ -67,9 +68,9 @@ class ClassMapperTests {
     @Test
     void toDtoAreEqual(){
         Set<Proficiency> proficiencies= Set.of(
-                getProficiency(1L,false,"athletics","skill"),
-                getProficiency(6L,false,"martial","weapons"),
-                getProficiency(8L,true,"heavy","armor")
+                getProficiency(1L,false,"athletics",ProfType.SKILL),
+                getProficiency(6L,false,"martial", ProfType.WEAPON),
+                getProficiency(8L,true,"heavy",ProfType.ARMOR)
         );
         DNDclass entity=new DNDclass();
         entity.setId(768L);

@@ -9,6 +9,8 @@ import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.Class
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ClassRepo;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.enums.ProfSubType;
+import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
@@ -73,28 +75,27 @@ public class ClassServiceImpl implements ClassService {
     private void seedProficiencies() {
         if (proficiencyRepo.count() > 0)
             return;
-        String type = "Language";
         List<Proficiency> proficiencies = new ArrayList<>();
-        proficiencies.add(getProficiency("Common", type));
-        proficiencies.add(getProficiency("Elven", type));
-        proficiencies.add(getProficiency("Dwarvish", type));
-        proficiencies.add(getProficiency("Orcish", type));
-        proficiencies.add(getProficiency("Celestial", type));
-        proficiencies.add(getProficiency("Infernal", type));
-        type = "Skill";
-        proficiencies.add(getProficiency("Athletics", type));
-        proficiencies.add(getProficiency("Acrobatics", type));
-        proficiencies.add(getProficiency("Arcana", type));
-        proficiencies.add(getProficiency("Sleight of hand", type));
-        proficiencies.add(getProficiency("Religion", type));
-        proficiencies.add(getProficiency("Perception", type));
+        proficiencies.add(getProficiency("Common", ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Elven", ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Dwarvish",  ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Orcish",  ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Celestial",  ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Infernal",  ProfType.LANGUAGE, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Athletics", ProfType.SKILL, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Acrobatics", ProfType.SKILL, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Arcana", ProfType.SKILL, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Sleight of hand", ProfType.SKILL, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Religion", ProfType.SKILL, ProfSubType.NONE));
+        proficiencies.add(getProficiency("Perception", ProfType.SKILL, ProfSubType.NONE));
         proficiencyRepo.saveAll(proficiencies);
     }
 
-    private Proficiency getProficiency(String name, String type) {
+    private Proficiency getProficiency(String name, ProfType type, ProfSubType profSubType) {
         Proficiency proficiency = new Proficiency();
         proficiency.setName(name);
         proficiency.setType(type);
+        proficiency.setSubtype(profSubType);
         return proficiency;
     }
 

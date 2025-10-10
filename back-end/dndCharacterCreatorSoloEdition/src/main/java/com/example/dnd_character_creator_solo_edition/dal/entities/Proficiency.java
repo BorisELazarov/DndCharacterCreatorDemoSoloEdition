@@ -1,5 +1,7 @@
 package com.example.dnd_character_creator_solo_edition.dal.entities;
 
+import com.example.dnd_character_creator_solo_edition.enums.ProfSubType;
+import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import jakarta.persistence.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -9,10 +11,16 @@ import java.util.Objects;
 @Entity
 @Table(name="proficiencies")
 public class Proficiency extends BaseEntity implements Serializable {
-    @Column(name="name", nullable = false, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
-    @Column(name="type", nullable = false, length = 50)
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name =" type", nullable = false)
+    private ProfType type;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "subtype", nullable = false)
+    private ProfSubType profSubType;
 
     public String getName() {
         return name;
@@ -22,12 +30,20 @@ public class Proficiency extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public String getType() {
+    public ProfType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ProfType type) {
         this.type = type;
+    }
+
+    public ProfSubType getSubtype() {
+        return profSubType;
+    }
+
+    public void setSubtype(ProfSubType profSubType) {
+        this.profSubType = profSubType;
     }
 
     @Override

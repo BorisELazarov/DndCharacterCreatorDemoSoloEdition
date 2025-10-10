@@ -3,6 +3,7 @@ package com.example.dnd_character_creator_solo_edition.integrationTests.repoTest
 import com.example.dnd_character_creator_solo_edition.dal.entities.BaseEntity;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -31,18 +32,17 @@ class ProficiencyRepoTests {
 
     @BeforeAll
     static void seedData(@Autowired ProficiencyRepo seedRepo){
-        String language="Language";
         List<Proficiency> proficiencies = new ArrayList<>();
-        proficiencies.add(seedProficiency("Common",language));
-        proficiencies.add(seedProficiency("Elven",language));
-        proficiencies.add(seedProficiency("Dwarvish",language));
-        proficiencies.add(seedProficiency("Orcish",language));
-        proficiencies.add(seedProficiency("Celestial", language));
-        proficiencies.add(seedProficiency("Infernal",language));
+        proficiencies.add(seedProficiency("Common",ProfType.LANGUAGE));
+        proficiencies.add(seedProficiency("Elven",ProfType.LANGUAGE));
+        proficiencies.add(seedProficiency("Dwarvish",ProfType.LANGUAGE));
+        proficiencies.add(seedProficiency("Orcish",ProfType.LANGUAGE));
+        proficiencies.add(seedProficiency("Celestial", ProfType.LANGUAGE));
+        proficiencies.add(seedProficiency("Infernal",ProfType.LANGUAGE));
         seedRepo.saveAll(proficiencies);
     }
 
-    private static Proficiency seedProficiency(String name, String type){
+    private static Proficiency seedProficiency(String name, ProfType type){
         Proficiency proficiency=new Proficiency();
         proficiency.setName(name);
         proficiency.setType(type);

@@ -4,6 +4,8 @@ import com.example.dnd_character_creator_solo_edition.bll.dtos.proficiencies.Pro
 import com.example.dnd_character_creator_solo_edition.bll.mappers.implementations.ProficiencyMapperImpl;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
+import com.example.dnd_character_creator_solo_edition.enums.ProfSubType;
+import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,7 +22,8 @@ class ProficiencyMapperTests {
                 Optional.of(1L),
                 true,
                 "heavy",
-                "armor"
+                ProfType.ARMOR,
+                ProfSubType.NONE
                 );
         Proficiency proficiency= mapper.fromDto(heavyArmor);
         heavyArmor.id().ifPresent(id-> assertEquals(id,proficiency.getId()));
@@ -35,7 +38,7 @@ class ProficiencyMapperTests {
         proficiency.setId(1L);
         proficiency.setIsDeleted(false);
         proficiency.setName("heavy");
-        proficiency.setType("armor");
+        proficiency.setType(ProfType.ARMOR);
         ProficiencyDTO dto=mapper.toDto(proficiency);
         assertTrue(dto.id().isPresent());
         assertEquals(proficiency.getId(),dto.id().get());
@@ -50,13 +53,15 @@ class ProficiencyMapperTests {
                 Optional.of(1L),
                 true,
                 "heavy",
-                "armor"
+                ProfType.ARMOR,
+                ProfSubType.NONE
         );
         ProficiencyDTO lightArmor=new ProficiencyDTO(
                 Optional.of(2L),
                 false,
                 "light",
-                "armor"
+                ProfType.ARMOR,
+                ProfSubType.NONE
         );
         List<ProficiencyDTO> proficiencyDTOS=List.of(heavyArmor, lightArmor);
         List<Proficiency> proficiencies=mapper.fromDTOs(proficiencyDTOS);
@@ -76,12 +81,12 @@ class ProficiencyMapperTests {
         heavyArmor.setId(5L);
         heavyArmor.setIsDeleted(true);
         heavyArmor.setName("heavy");
-        heavyArmor.setType("burden");
+        heavyArmor.setType(ProfType.ARMOR);
         Proficiency lightArmor=new Proficiency();
         lightArmor.setId(2L);
         lightArmor.setIsDeleted(false);
         lightArmor.setName("light");
-        lightArmor.setType("annoyance");
+        lightArmor.setType(ProfType.ARMOR);
         List<Proficiency> proficiencies=List.of(heavyArmor, lightArmor);
         List<ProficiencyDTO> proficiencyDTOS=mapper.toDTOs(proficiencies);
         for (int i = 0; i <  proficiencies.size(); i++) {
