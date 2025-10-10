@@ -24,6 +24,8 @@ import { Spell } from '../../../shared/interfaces/spell';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
 import { NgTemplateOutlet } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
+import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
 
 @Component({
   selector: 'app-character-sheet',
@@ -74,12 +76,13 @@ export class CharacterSheetComponent implements OnInit, OnDestroy{
         this.armors=this.character.dndClass.proficiencies.filter(x=>x.type==='Armor');
         this.weapons=this.character.dndClass.proficiencies.filter(x=>x.type==='Weapon');
         this.languages=this.character.dndClass.proficiencies.filter(x=>x.type=='Language');
-        this.tools=this.character.dndClass.proficiencies.filter(x=>x.type=='Tools');
+        this.tools=this.character.dndClass.proficiencies.filter(x=>x.type=='Tool');
       }
     );
-    let filter:ProficiencyFilter={
+    let filter: ProficiencyFilter={
       name:'',
-      type:'Skill'
+      type: ProfType.SKILL,
+      subtype: ProfSubtype.NONE
     };
     let sort:Sort={
       sortBy:'name',
