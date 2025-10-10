@@ -27,7 +27,7 @@ public class ProficiencyMapperImpl implements ProficiencyMapper {
             return null;
         return new ProficiencyDTO(proficiency.getId().describeConstable(),
                 proficiency.getIsDeleted(), proficiency.getName(),
-                proficiency.getType());
+                proficiency.getType(), proficiency.getSubtype());
     }
 
     @Override
