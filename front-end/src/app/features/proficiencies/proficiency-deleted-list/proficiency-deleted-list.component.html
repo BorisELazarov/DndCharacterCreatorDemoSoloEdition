@@ -15,7 +15,7 @@
         <mat-label>Type</mat-label>
         <input matInput type="text" [(ngModel)]="filter.type">
         @if (filter.type) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.type=''">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="clearType()">
             <mat-icon>close</mat-icon>
           </button>
         }

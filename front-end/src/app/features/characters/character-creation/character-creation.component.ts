@@ -132,7 +132,7 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     this.weapons=this.selectedClass.proficiencies.filter(x=>x.type==='Weapon');
     this.skills=this.selectedClass.proficiencies.filter(x=>x.type==='Skill');
     this.languages=this.selectedClass.proficiencies.filter(x=>x.type=='Language');
-    this.tools=this.selectedClass.proficiencies.filter(x=>x.type=='Tools');
+    this.tools=this.selectedClass.proficiencies.filter(x=>x.type=='Tool');
   }
 
   preparePointBuy(): void {
