@@ -2,74 +2,62 @@
 <div class="left">
     <div class="left">
     <span class="title">Filter:</span>
-    <mat-form-field class="example-form-field">
-        <mat-label>Name</mat-label>
-        <input matInput type="text" [(ngModel)]="filter.name">
+    <p-iftalabel class="example-form-field">
+        <label class="p-label">Name</label>
+        <input pInputText type="text" [(ngModel)]="filter.name" (ngModelChange)="search()">
         @if (filter.name) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.name=''">
-            <mat-icon>close</mat-icon>
+          <button aria-label="Clear" (click)="filter.name=''" (click)="search()">
+            <i class="pi pi-close"></i>
           </button>
         }
-    </mat-form-field>
-    <mat-form-field class="example-form-field">
-        <mat-label>Type</mat-label>
-        <input matInput type="text" [(ngModel)]="filter.type">
+    </p-iftalabel>
+    <p-iftalabel class="example-form-field">
+        <label class="p-label">Type</label>
+        <p-select [(ngModel)]="filter.type" (selectionChange)="search()">
+            <option [value]="undefined" aria-selected="filter.type===''">None</option>
+            <option value="SKILL">Skill</option>
+            <option value="ARMOR">Armor</option>
+            <option value="WEAPON">Weapon</option>
+            <option value="SAVING_THROW">Saving Throw</option>
+            <option value="LANGUAGE">Language</option>
+            <option value="TOOL">Tools</option>
+        </p-select>
         @if (filter.type) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="clearType()">
-            <mat-icon>close</mat-icon>
+          <button aria-label="Clear" (click)="clearType()" (click)="search()">
+            <i class="pi pi-close"></i>
           </button>
         }
-    </mat-form-field>
-    </div>
-    <div class="left">
-    <span class="title">Sort:</span>
-    <mat-form-field>
-        <mat-label>Sort by:</mat-label>
-        <mat-select [(value)]="sort.sortBy">
-          <mat-option value="">None</mat-option>
-          <mat-option value="name">Name</mat-option>
-          <mat-option value="type">Type</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Asc/Desc</mat-label>
-        <mat-select [(value)]="sort.ascending">
-          <mat-option value="true">Ascending</mat-option>
-          <mat-option value="false">Descenging</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <button mat-stroked-button class="search" (click)="search()">Search</button>
+    </p-iftalabel>
     </div>
 </div>
-<table mat-table [dataSource]="dataSource">
+<div class="table">
+<p-table [value]="data"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20, 30]">
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="name">Name:</th>
+        <th pSortableColumn="type">Type:</th>
+        <th></th>
+      </tr>
+    </ng-template>
 
-    <mat-text-column name="name" headerText="Name:" ></mat-text-column>
-
-    <mat-text-column name="type" headerText="Type:" ></mat-text-column>
-
-    <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let row">
-            <button mat-fab extended (click)="restore(row.id)">
-                <mat-icon>restore</mat-icon>
-                Restore
+    <ng-template #body let-proficiency>
+        <tr>
+          <td>{{proficiency.name}}</td>
+          <td>{{proficiency.type}}</td>
+          <td>
+            <button extended (click)="restore(proficiency.id)">
+              <i class="pi pi-restore"></i>
+              Restore
             </button>
-            <button mat-fab extended (click)="openDialog(row.id)">
-                <mat-icon>delete</mat-icon>
-                Confirmed delete
+            <button extended (click)="openDialog(proficiency.id)">
+              <i class="pi pi-delete"></i>
+              Confirmed delete
             </button>
         </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
-</table>
-<mat-paginator #paginator
-  [length]="dataSource.data.length"
-  [pageIndex]="0"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 20]"
-  aria-label="Select page">
-</mat-paginator>
-
-  
+        </tr>
+    </ng-template>
+</p-table>
+</div>

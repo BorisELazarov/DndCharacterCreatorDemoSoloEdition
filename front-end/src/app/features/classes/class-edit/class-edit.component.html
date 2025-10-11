@@ -25,9 +25,11 @@
         <p-iftalabel class="full-width">
             <label class="p-label">Type:</label>
             <textarea maxlength="65535" pInput type="text" formControlName="description"></textarea>
-            <div *ngIf="editForm.controls['description'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
+            @if (editForm.controls['description'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+            }
         </p-iftalabel>
             <br>
         <button type="submit">Save</button>

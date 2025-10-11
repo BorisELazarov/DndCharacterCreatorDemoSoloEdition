@@ -51,8 +51,6 @@ ssrc/main/java/com/example/dnd_character_creator_solo_edition/bll/services/imple
 osrc/test/java/com/example/dnd_character_creator_solo_edition/integrationTests/repoTests/CharacterRepoTests.java,d\a\da4ba11f9ab3263945ef38dd39f0e7ed47020639
 ¡
 qsrc/test/java/com/example/dnd_character_creator_solo_edition/unitTests/mapperTests/CharacterSpellMapperTests.java,5\2\52aa227a824ca26a6ba3cf46303cb13408967dfd
-š
-jsrc/test/java/com/example/dnd_character_creator_solo_edition/integrationTests/repoTests/RoleRepoTests.java,3\d\3d119ed39dbbd62b55476261052be6393bfefba8
 ›
 ksrc/test/java/com/example/dnd_character_creator_solo_edition/unitTests/mapperTests/CharacterMapperTest.java,e\7\e7b4705488d7326f88726325243ccb0535d29f04
 ˜

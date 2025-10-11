@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { LocalStorageService } from './core/services/local-storage-service/local-storage.service';
 import { ToolbarModule } from 'primeng/toolbar';
-import { MatExpansionModule } from "@angular/material/expansion";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, RouterLink, ToolbarModule,
-    MatExpansionModule
+    RouterOutlet, RouterLink, ToolbarModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

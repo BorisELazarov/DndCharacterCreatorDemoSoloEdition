@@ -6,9 +6,9 @@ import { Routes } from "@angular/router";
 // import { ClassListComponent } from "./features/classes/class-list/class-list.component";
 // import { CreateProficiencyComponent } from "./features/proficiencies/create-proficiency/create-proficiency.component";
 // import { EditProficiencyComponent } from "./features/proficiencies/edit-proficiency/edit-proficiency.component";
-// import { ProficiencyDeletedListComponent } from "./features/proficiencies/proficiency-deleted-list/proficiency-deleted-list.component";
 // import { ProficiencyDetailsComponent } from "./features/proficiencies/proficiency-details/proficiency-details.component";
-// import { ProficiencyListComponent } from "./features/proficiencies/proficiency-list/proficiency-list.component";
+import { ProficiencyListComponent } from "./features/proficiencies/proficiency-list/proficiency-list.component";
+import { ProficiencyDeletedListComponent } from "./features/proficiencies/proficiency-deleted-list/proficiency-deleted-list.component";
 // import { SpellListComponent } from "./features/spells/spell-list/spell-list.component";
 // import { SpellDetailsComponent } from "./features/spells/spell-details/spell-details.component";
 // import { SpellCreateComponent } from "./features/spells/spell-create/spell-create.component";
@@ -33,16 +33,16 @@ export const routes: Routes = [
         component:HomeComponent,
         title:'Home'
     },
-    // {
-    //     path:'proficiencies',
-    //     component:ProficiencyListComponent,
-    //     title:'Proficiency list'
-    // },
-    // {
-    //     path:'proficiencies/deleted',
-    //     component:ProficiencyDeletedListComponent,
-    //     title:'Deleted proficiency list'
-    // },
+    {
+        path:'proficiencies',
+        component:ProficiencyListComponent,
+        title:'Proficiency list'
+    },
+    {
+        path:'proficiencies/deleted',
+        component:ProficiencyDeletedListComponent,
+        title:'Deleted proficiency list'
+    },
     // {
     //     path:'proficiencies/create',
     //     component:CreateProficiencyComponent,

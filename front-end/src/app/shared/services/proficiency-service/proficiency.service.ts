@@ -11,7 +11,7 @@ import { ProficiencyFilter } from '../../filters/proficiency-filter';
 export class ProficiencyService {
   readonly url: string='http://localhost:8080/api/proficiencies';
   constructor(private httpClient:HttpClient) {}
-  public getAllDeleted(sort:Sort,filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
+  public getAllDeleted(sort:Sort, filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
       .post<Proficiency[]>(
         this.url+'/getAll/deleted',{

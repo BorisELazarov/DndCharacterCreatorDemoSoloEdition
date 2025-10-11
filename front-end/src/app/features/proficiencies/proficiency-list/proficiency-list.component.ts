@@ -1,29 +1,19 @@
 import { CommonModule } from '@angular/common';
-
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-
-import { Proficiency } from '../../../shared/interfaces/proficiency';
-
-import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-
-import {MatTableDataSource, MatTableModule } from '@angular/material/table';
-
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { Sort } from '../../../core/sort';
-
-
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
-import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
-import { MatListItem } from '@angular/material/list';
+
+import { IftaLabelModule } from "primeng/iftalabel";
+import { Select } from "primeng/select";
+import { TableModule } from 'primeng/table'
+
+import { Proficiency } from '../../../shared/interfaces/proficiency';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
+import { Sort } from '../../../core/sort';
+import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
+import { PaginatorState } from "primeng/paginator";
+import { InputText } from "primeng/inputtext";
   
 
 @Component({
@@ -32,9 +22,7 @@ selector: 'app-proficiency',
 
 standalone: true,
 
-imports: [CommonModule, RouterLink, MatTableModule,
-  MatPaginatorModule, MatSelectModule, MatButtonModule,
-  MatInputModule, MatIconModule, FormsModule],
+imports: [CommonModule, RouterLink, FormsModule, IftaLabelModule, Select, TableModule, InputText],
 template:'<h1>Proficiencies:</h1>',
  templateUrl: './proficiency-list.component.html',
 styleUrl: './proficiency-list.component.css'
@@ -45,10 +33,11 @@ export class ProficiencyListComponent implements OnInit, OnDestroy{
 
 private destroy = new Subject<void>();
 
-protected dataSource:MatTableDataSource<Proficiency>=new MatTableDataSource<Proficiency>([]);
+protected data:Proficiency [] =[];
+protected itemsPerPage = 20;
+protected firstItemIndex = 0;
 columnsToDisplay : string[] = ['name', 'type' ,'actions'];
 
-@ViewChild(MatPaginator) paginator!: MatPaginator;
 protected sort:Sort;
 protected filter:ProficiencyFilter;
 
@@ -62,24 +51,28 @@ constructor(private proficiencyService:ProficiencyService){
   };
  }
 
- ngOnInit(): void {
-   this.proficiencyService.getAll(this.sort,this.filter).pipe(
-    takeUntil(this.destroy)
-  ).subscribe(response=>{
-    this.dataSource.data=response.body??[];
-    this.dataSource.paginator=this.paginator;
-  });
- }
+  ngOnInit(): void {
+    this.proficiencyService.getAll(this.sort, this.filter).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
+      this.data=response.body??[];
+    });
+  }
 
   clearType() {
     this.filter.type = undefined;
+  }
+
+  changePage(event: PaginatorState): void {
+    this.firstItemIndex = event.first ?? 0;
+    this.itemsPerPage = event.rows ?? 10;
   }
 
  search():void {
   this.proficiencyService.getAll(this.sort,this.filter).pipe(
     takeUntil(this.destroy)
   ).subscribe(response=>{
-   this.dataSource.data=response.body??[];
+    this.data=response.body??[];
   });
  }
 
