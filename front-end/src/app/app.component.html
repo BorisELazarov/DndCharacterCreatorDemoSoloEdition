@@ -1,10 +1,10 @@
 
 <main class="main">
-  <mat-toolbar color="primary">
-    <mat-toolbar-row>
+  <p-toolbar>
+    <ng-template #start>
       <div class="separator">
         <a [routerLink]="['home']">Home</a>
-        <mat-icon>info</mat-icon>
+        <i class="pi pi-info"></i>
       </div>
       <div class="separator">
         <a [routerLink]="['characters']">Characters</a>
@@ -18,8 +18,8 @@
       <div class="separator">
         <a [routerLink]="['spells']">Spells</a>
       </div>
-    </mat-toolbar-row>
-  </mat-toolbar>
+    </ng-template>
+  </p-toolbar>
 </main>
 
 <router-outlet />

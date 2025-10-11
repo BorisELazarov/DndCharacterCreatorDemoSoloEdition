@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
-import { MatIcon } from '@angular/material/icon';
 import { LocalStorageService } from './core/services/local-storage-service/local-storage.service';
-import { MatButtonModule } from '@angular/material/button';
+import { ToolbarModule } from 'primeng/toolbar';
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, MatToolbar, MatToolbarRow, 
-    MatIcon, MatButtonModule, RouterLink
-  ],
+    RouterOutlet, RouterLink, ToolbarModule,
+    MatExpansionModule
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

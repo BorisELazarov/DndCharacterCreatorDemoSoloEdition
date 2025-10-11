@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
@@ -16,13 +9,19 @@ import { HitDice } from '../../../shared/enums/hit-dice';
 import { ClassService } from '../../../shared/services/class-service/class.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
+import { CardModule } from 'primeng/card';
+import { SelectModule } from 'primeng/select';
+import { IftaLabelModule } from 'primeng/iftalabel';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-class-edit',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule,
-     MatChipsModule, MatIconModule, MatListModule],
+  imports: [
+    ReactiveFormsModule, CommonModule, CardModule, SelectModule, IftaLabelModule,
+    InputGroupAddonModule, InputGroupModule
+  ],
   templateUrl: './class-edit.component.html',
   styleUrl: './class-edit.component.css'
 })
