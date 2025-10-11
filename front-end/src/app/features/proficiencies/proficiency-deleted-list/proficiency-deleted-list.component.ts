@@ -72,10 +72,18 @@ export class ProficiencyDeletedListComponent implements OnInit, OnDestroy{
    removeFromDataSource(id:number):void{
     this.data=this.data.filter(x=>x.id!=id);
    }
+
+  getTypes(): string[] {
+    return Object.values(ProfType).map(proftype => proftype.toString()).splice(0, Object.values(ProfType).length/2);
+  }
   
    clearType(): void {
     this.filter.type = ProfType.NONE;
    }
+
+  getTypeAsString(profType: ProfType) : string{
+    return profType.toString().charAt(0) + profType.toString().substring(1).toLowerCase();
+  }
 
    search():void {
     this.proficiencyService.getAllDeleted(this.sort,this.filter).pipe(

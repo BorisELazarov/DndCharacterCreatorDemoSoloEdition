@@ -1,9 +1,9 @@
 export enum ProfType {
-    NONE = "None",
-    SKILL = "Skill",
-    ARMOR = "Armor",
-    WEAPON = "Weapon",
-    SAVING_THROW = "Saving throw",
-    LANGUAGE = "Language",
-    TOOL = "Tool"
+    NONE,
+    SKILL,
+    ARMOR,
+    WEAPON,
+    SAVING_THROW,
+    LANGUAGE,
+    TOOL
 }

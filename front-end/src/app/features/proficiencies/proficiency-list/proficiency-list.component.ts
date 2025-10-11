@@ -14,6 +14,7 @@ import { Sort } from '../../../core/sort';
 import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
 import { PaginatorState } from "primeng/paginator";
 import { InputText } from "primeng/inputtext";
+import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
   
 
 @Component({
@@ -36,7 +37,6 @@ private destroy = new Subject<void>();
 protected data:Proficiency [] =[];
 protected itemsPerPage = 20;
 protected firstItemIndex = 0;
-columnsToDisplay : string[] = ['name', 'type' ,'actions'];
 
 protected sort:Sort;
 protected filter:ProficiencyFilter;
@@ -57,6 +57,14 @@ constructor(private proficiencyService:ProficiencyService){
     ).subscribe(response=>{
       this.data=response.body??[];
     });
+  }
+
+  getTypes(): string[] {
+    return Object.values(ProfType).map(proftype => proftype.toString()).splice(0, Object.values(ProfType).length/2);
+  }
+
+  getTypeAsString(profType: ProfType) : string{
+    return profType.toString().charAt(0) + profType.toString().substring(1).toLowerCase();
   }
 
   clearType() {

@@ -14,5 +14,5 @@ public record ProficiencyDTO(Optional<Long> id, Boolean isDeleted,
                              @NotNull(message = "Type must not be empty")
                              ProfType type,
                              @NotNull(message = "Subtype must not be empty")
-                             ProfSubType profSubType) {
+                             ProfSubType subtype) {
 }

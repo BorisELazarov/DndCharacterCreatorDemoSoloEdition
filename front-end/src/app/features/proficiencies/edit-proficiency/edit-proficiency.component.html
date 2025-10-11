@@ -2,21 +2,28 @@
     <div>
     <h1>Edit proficiency</h1>
      <form [formGroup]="editForm" (ngSubmit)="submit()">
-        <mat-form-field>
-            <mat-label>Name:</mat-label>
+        <p-iftalabel>
+            <label class="p-label">Name:</label>
             <input matInput type="text" formControlName="name">
             <div *ngIf="editForm.controls['name'].errors?.['required']">
                 <a class="danger">*Field must no be empty!</a>
                 <br>
             </div>
-        </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Type:</mat-label>
-            <input matInput type="text" formControlName="type">
-            <div *ngIf="editForm.controls['type'].errors?.['required']">
+        </p-iftalabel>
+        <p-iftalabel class="full-width">
+            <label class="p-label">Type:</label>
+            <p-select [options] = "getTypes()" formControlName="type"></p-select>
+            @if (editForm.controls['type'].errors?.['required']) {
                 <a class="danger">*Field must not be empty!</a>
-            </div>
-        </mat-form-field>
+            }
+        </p-iftalabel>
+        <p-iftalabel class="full-width">
+            <label class="p-label">Subtype:</label>
+            <p-select [options] = "getSubtypes()" formControlName="subtype"></p-select>
+            @if (editForm.controls['subtype'].errors?.['required']) {
+                <a class="danger">*Field must not be empty!</a>
+            }
+        </p-iftalabel>
            <br>
         <button type="submit">Save</button>
      </form>

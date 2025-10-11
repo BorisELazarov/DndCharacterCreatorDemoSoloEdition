@@ -63,3 +63,11 @@ Msrc/main/java/com/example/dnd_character_creator_solo_edition/common/Sort.java,
 esrc/main/java/com/example/dnd_character_creator_solo_edition/api/controllers/CharacterController.java,4\6\468a32aa312db4accae982aaff41703d31489400
 “
 csrc/main/java/com/example/dnd_character_creator_solo_edition/exceptions/GlobalExceptionHandler.java,3\3\33291f283faba472b9f9028f6a9123b28383b998
+—
+gsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/dtos/proficiencies/ProficiencyDTO.java,a\0\a007ae61bfcf2b6043ab41c2989c000c581f1606
+œ
+lsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/services/interfaces/ProficiencyService.java,f\2\f2d9b728c394fbec29f1a13ea17d25fa87432723
+§
+wsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/interfaces/parents/ISingleParameterMapper.java,4\3\43d26bc72100361887efbb4f1a21c92a6a40f45b
+£
+ssrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/implementations/ProficiencyMapperImpl.java,0\5\055b7666683edde7061211c9a9c3b3a58ac2c3fe

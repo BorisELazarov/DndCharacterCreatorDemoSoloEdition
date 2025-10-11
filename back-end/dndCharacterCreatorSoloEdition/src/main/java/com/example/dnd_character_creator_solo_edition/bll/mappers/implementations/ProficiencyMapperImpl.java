@@ -18,6 +18,7 @@ public class ProficiencyMapperImpl implements ProficiencyMapper {
         proficiency.setIsDeleted(proficiencyDTO.isDeleted());
         proficiency.setName(proficiencyDTO.name());
         proficiency.setType(proficiencyDTO.type());
+        proficiency.setSubtype(proficiencyDTO.subtype());
         return proficiency;
     }
 

@@ -7,24 +7,17 @@
         <input pInputText type="text" [(ngModel)]="filter.name" (ngModelChange)="search()">
         @if (filter.name) {
           <button aria-label="Clear" (click)="filter.name=''" (click)="search()">
-            <i class="pi pi-close"></i>
+            <i class="pi pi-times"></i>
           </button>
         }
     </p-iftalabel>
+    <br>
     <p-iftalabel class="example-form-field">
         <label class="p-label">Type</label>
-        <p-select [(ngModel)]="filter.type" (selectionChange)="search()">
-            <option [value]="undefined" aria-selected="filter.type===''">None</option>
-            <option value="SKILL">Skill</option>
-            <option value="ARMOR">Armor</option>
-            <option value="WEAPON">Weapon</option>
-            <option value="SAVING_THROW">Saving Throw</option>
-            <option value="LANGUAGE">Language</option>
-            <option value="TOOL">Tools</option>
-        </p-select>
+        <p-select [options] = "getTypes()" [(ngModel)]="filter.type" (onChange)="search()"></p-select>
         @if (filter.type) {
           <button aria-label="Clear" (click)="clearType()" (click)="search()">
-            <i class="pi pi-close"></i>
+            <i class="pi pi-times"></i>
           </button>
         }
     </p-iftalabel>
@@ -46,7 +39,7 @@
     <ng-template #body let-proficiency>
         <tr>
           <td>{{proficiency.name}}</td>
-          <td>{{proficiency.type}}</td>
+          <td>{{getTypeAsString(proficiency.type)}}</td>
           <td>
             <button extended (click)="restore(proficiency.id)">
               <i class="pi pi-restore"></i>
