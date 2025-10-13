@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
@@ -14,12 +14,14 @@ import { SelectModule } from 'primeng/select';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
+import { CommonMethods } from '../../../core/misc/common-methods';
 
 @Component({
   selector: 'app-class-edit',
   standalone: true,
   imports: [
-    ReactiveFormsModule, CommonModule, CardModule, SelectModule, IftaLabelModule,
+    ReactiveFormsModule, FormsModule, CommonModule, CardModule, SelectModule, IftaLabelModule,
     InputGroupAddonModule, InputGroupModule
   ],
   templateUrl: './class-edit.component.html',
@@ -60,7 +62,8 @@ export class ClassEditComponent  implements OnInit, OnDestroy {
     this.proficiency={
       id:id,
       name:'',
-      type: ProfType.NONE
+      type: ProfType.NONE,
+      subtype: ProfSubtype.NONE
     }
   }
 
@@ -108,6 +111,14 @@ export class ClassEditComponent  implements OnInit, OnDestroy {
     }
   }
 
+  getHitDices(): string[] {
+    return CommonMethods.getHitDices();
+  }
+
+  getProfTypes(): string[] {
+    return CommonMethods.getProfTypes();
+  }
+
   setType():void{
     this.nameList=this.proficiencies.filter(x=>x.type===this.proficiency.type).flatMap(x=>x.name);
     this.nameList=this.removeDuplicates(this.nameList);
@@ -135,7 +146,8 @@ export class ClassEditComponent  implements OnInit, OnDestroy {
   private reset():void{
     this.proficiency={
       name:'',
-      type: ProfType.NONE
+      type: ProfType.NONE,
+      subtype: ProfSubtype.NONE
     }
     this.disabled=true;
     this.typeList=this.proficiencies.flatMap(x=>x.type);

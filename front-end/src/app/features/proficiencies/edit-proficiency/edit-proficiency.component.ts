@@ -9,11 +9,12 @@ import { IftaLabelModule } from "primeng/iftalabel";
 import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
 import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
 import { Select } from 'primeng/select';
+import { InputGroupModule } from "primeng/inputgroup";
 
 @Component({
   selector: 'app-edit-proficiency',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, IftaLabelModule, Select],
+  imports: [ReactiveFormsModule, CommonModule, IftaLabelModule, Select, InputGroupModule],
   templateUrl: './edit-proficiency.component.html',
   styleUrl: './edit-proficiency.component.css'
 })

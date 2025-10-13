@@ -2,28 +2,28 @@
 <div>
 <h1>Add proficiency</h1>
 <form class="form" [formGroup]="createForm" (ngSubmit)="submit()">
-    <p-iftalabel class="full-width">
+    <p-inputgroup class="full-width">
         <label class="p-label">Name:</label>
         <input matInput type="text" formControlName="name">
         <div *ngIf="createForm.controls['name'].errors?.['required']">
             <a class="danger">*Field must no be empty!</a>
             <br>
         </div>
-    </p-iftalabel>
-    <p-iftalabel class="full-width">
+    </p-inputgroup>
+    <p-inputgroup class="full-width">
         <label class="p-label">Type:</label>
         <p-select [options] = "getTypes()" formControlName="type"></p-select>
         @if (createForm.controls['type'].errors?.['required']) {
             <a class="danger">*Field must not be empty!</a>
         }
-    </p-iftalabel>
-    <p-iftalabel class="full-width">
+    </p-inputgroup>
+    <p-inputgroup class="full-width">
         <label class="p-label">Subtype:</label>
         <p-select [options] = "getSubtypes()" formControlName="subtype"></p-select>
         @if (createForm.controls['subtype'].errors?.['required']) {
             <a class="danger">*Field must not be empty!</a>
         }
-    </p-iftalabel>
+    </p-inputgroup>
             <br>
         <button type="submit">Save</button>
 </form>

@@ -1,42 +1,50 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { LocalStorageService } from './core/services/local-storage-service/local-storage.service';
-import { ToolbarModule } from 'primeng/toolbar';
+import { RouterOutlet } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
-    RouterOutlet, RouterLink, ToolbarModule
+    RouterOutlet, MenubarModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  constructor(private localStorageService:LocalStorageService) {
-  }
+  protected items: MenuItem[] | undefined;
+
+  constructor() {}
+
   ngOnInit(): void {
-  }
-
-  deleted():boolean|undefined{
-    switch (this.localStorageService.getItem("deleted")) {
-      case "false":
-        return false;
-
-      case "true":
-        return true;
-      
-      default:
-        return undefined;
-    }
-  }
-
-  role():string|undefined{
-    return this.localStorageService.getItem("role")??undefined;
-  }
-
-  logOut() {
-    this.localStorageService.clear();
+    this.items = [
+      {
+        label: "Home",
+        icon: "pi pi-home",
+        url: 'home'
+      },
+      {
+        label: "Characters",
+        icon: "pi pi-user",
+        url: 'characters'
+      },
+      {
+        label: "Proficiencies",
+        icon: "pi pi-pencil",
+        url: 'proficiencies'
+      },
+      {
+        label: "Classes",
+        icon: "pi pi-shield",
+        url: 'classes'
+      },
+      {
+        label: "Spells",
+        icon: "pi pi-sparkles",
+        url: 'spells'
+      }
+    ];
   }
 
   

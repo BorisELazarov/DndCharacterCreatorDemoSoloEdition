@@ -71,3 +71,9 @@ lsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/services/inter
 wsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/interfaces/parents/ISingleParameterMapper.java,4\3\43d26bc72100361887efbb4f1a21c92a6a40f45b
 £
 ssrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/implementations/ProficiencyMapperImpl.java,0\5\055b7666683edde7061211c9a9c3b3a58ac2c3fe
+è
+_src/main/java/com/example/dnd_character_creator_solo_edition/bll/dtos/dnd_classes/ClassDTO.java,f\d\fd6eb2cb44884a1999ca0b9414b58a200b891cdd
+É
+Ssrc/main/java/com/example/dnd_character_creator_solo_edition/enums/HitDiceEnum.java,a\a\aad5f541a403479ee3b181c90c5245562b8c3ef2
+Ö
+Usrc/main/java/com/example/dnd_character_creator_solo_edition/filters/SpellFilter.java,b\c\bc2209541693e5918c9553e9a8fc7ecec15f6834

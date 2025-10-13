@@ -1,44 +1,48 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { HitDice } from '../../../shared/enums/hit-dice';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
-import { MatIconModule } from '@angular/material/icon';
-import {MatListModule} from '@angular/material/list'
 import { ClassService } from '../../../shared/services/class-service/class.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
+import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
+import { InputGroupModule } from "primeng/inputgroup";
+import { CommonMethods } from '../../../core/misc/common-methods';
+import { CardModule } from "primeng/card";
+import { InputText } from "primeng/inputtext";
+import { SelectModule } from 'primeng/select';
+import { PanelModule } from 'primeng/panel';
+import { InputGroupAddonModule } from "primeng/inputgroupaddon";
 
 @Component({
   selector: 'app-class-create',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule,
-     MatChipsModule, MatIconModule, MatListModule],
+  imports: [
+    ReactiveFormsModule, CommonModule, InputGroupModule, CardModule,
+    InputText, SelectModule, PanelModule,
+    InputGroupAddonModule
+],
   templateUrl: './class-create.component.html',
   styleUrl: './class-create.component.css'
 })
 export class ClassCreateComponent implements OnInit, OnDestroy {
-  private destroy=new Subject<void>();
 
   protected disabled:boolean=true;
   protected type:string='';
 
   protected createForm :FormGroup;
+  protected proficiencyForm: FormGroup;
   protected dndClass:DndClass;
-  protected proficiency:Proficiency;
 
   protected typeList:ProfType[]=[];
   protected nameList:string[]=[];
   protected proficiencies:Proficiency[]=[];
+
+  private destroy=new Subject<void>();
 
   constructor(private classService: ClassService,
     private proficiencyService:ProficiencyService,
@@ -48,15 +52,17 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
       hitDice: [HitDice.D6],
       description: ['',Validators.required]
     });
+    this.proficiencyForm = fb.group({
+      id: 0,
+      name: '',
+      type: ProfType.NONE,
+      subtype: ProfSubtype.NONE
+    });
     this.dndClass={
       name:'',
       hitDice:HitDice.D6,
       description:'',
       proficiencies:[]
-    }
-    this.proficiency={
-      name:'',
-      type: ProfType.NONE
     }
   }
 
@@ -68,6 +74,10 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
         this.typeList=this.proficiencies.flatMap(x=>x.type);
         this.typeList = this.removeDuplicates(this.typeList);
       });
+  }
+  
+  getHitDices(): string[] {
+    return CommonMethods.getHitDices();
   }
 
   removeDuplicates(list:any[]):any[]{
@@ -89,8 +99,12 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  getProfTypes(): string[] {
+    return CommonMethods.getProfTypes();
+  }
+
   setType():void{
-    this.nameList=this.proficiencies.filter(x=>x.type===this.proficiency.type).flatMap(x=>x.name);
+    this.nameList=this.proficiencies.filter(x=>x.type===this.proficiencyForm.controls["type"].value).flatMap(x=>x.name);
     this.nameList=this.removeDuplicates(this.nameList);
   }
 
@@ -99,11 +113,16 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
   }
 
   addProficiency():void{
-    this.proficiency.id=this.proficiencies.find(x=>x.name===this.proficiency.name
-      && this.proficiency.type===x.type
-    )?.id;
-    this.dndClass.proficiencies.push(this.proficiency);
-    this.proficiencies=this.proficiencies.filter(x=>!(x.id===this.proficiency.id));
+    this.proficiencyForm.controls["id"].setValue(this.proficiencies.find(x=>x.name===this.proficiencyForm.controls["name"].value
+      && this.proficiencyForm.controls["type"].value===x.type
+    )?.id);
+    this.dndClass.proficiencies.push({
+      id: this.proficiencyForm.controls["id"].value,
+      name: this.proficiencyForm.controls["name"].value,
+      type: this.proficiencyForm.controls["type"].value,
+      subtype: ProfSubtype.NONE
+    });
+    this.proficiencies=this.proficiencies.filter(x=>!(x.id===this.proficiencyForm.controls["id"].value));
     this.reset();
   }
 
@@ -114,10 +133,8 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
   }
 
   private reset():void{
-    this.proficiency={
-      name:'',
-      type:ProfType.NONE
-    }
+    this.proficiencyForm.controls["name"].setValue("");
+    this.proficiencyForm.controls["type"].setValue(ProfType.NONE);
     this.disabled=true;
     this.typeList=this.proficiencies.flatMap(x=>x.type);
     this.typeList = this.removeDuplicates(this.typeList);

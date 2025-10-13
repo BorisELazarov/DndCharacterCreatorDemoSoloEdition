@@ -2,7 +2,7 @@
 <div class="left">
     <div class="left">
     <span class="title">Filter:</span>
-    <p-iftalabel class="example-form-field">
+    <p-inputgroup class="example-form-field">
         <label class="p-label">Name</label>
         <input pInputText type="text" [(ngModel)]="filter.name" (ngModelChange)="search()">
         @if (filter.name) {
@@ -10,9 +10,9 @@
             <i class="pi pi-times"></i>
           </button>
         }
-    </p-iftalabel>
+    </p-inputgroup>
     <br>
-    <p-iftalabel class="example-form-field">
+    <p-inputgroup class="example-form-field">
         <label class="p-label">Type</label>
         <p-select [options] = "getTypes()" [(ngModel)]="filter.type" (onChange)="search()"></p-select>
         @if (filter.type) {
@@ -20,7 +20,7 @@
             <i class="pi pi-times"></i>
           </button>
         }
-    </p-iftalabel>
+    </p-inputgroup>
     </div>
 </div>
 <div class="table">

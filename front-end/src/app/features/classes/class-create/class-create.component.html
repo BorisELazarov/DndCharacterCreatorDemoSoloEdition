@@ -2,30 +2,29 @@
     <div>
     <h1>Create class</h1>
     <form class="example-form" [formGroup]="createForm" (ngSubmit)="submit()">
-        <mat-form-field class="full-width">
-            <mat-label>Name:</mat-label>
-            <input matInput type="text" formControlName="name">
-            <div *ngIf="createForm.controls['name'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Hit Dice</mat-label>
-        <mat-select formControlName="hitDice">
-            <mat-option value="D6">D6</mat-option>
-            <mat-option value="D8">D8</mat-option>
-            <mat-option value="D10">D10</mat-option>
-            <mat-option value="D12">D12</mat-option>
-        </mat-select>
-          </mat-form-field>
-        <mat-form-field class="full-width">
-            <mat-label>Description:</mat-label>
-            <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
-            <div *ngIf="createForm.controls['description'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
-        </mat-form-field>
+        <p-inputgroup class="full-width">
+            <label class="p-label">Name:</label>
+            <input type="text" formControlName="name">
+            @if (createForm.controls['name'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must no be empty!</a>
+                    <br>
+                </div>
+            }
+        </p-inputgroup>
+        <p-inputgroup>
+            <label class="p-label">Hit Dice</label>
+            <p-select formControlName="hitDice" [options] = "getHitDices()"></p-select>
+        </p-inputgroup>
+        <p-inputgroup class="full-width">
+            <label class="p-label">Description:</label>
+            <textarea maxlength="65535" pInputText type="text" formControlName="description"></textarea>
+            @if (createForm.controls['description'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+            }
+        </p-inputgroup>
                 <br>
             <button type="submit">Save</button>
     </form>
@@ -36,58 +35,44 @@
 <ol>
     @for (savedItem of dndClass.proficiencies; track $index) {
         <li>
-          <mat-card appearance="outlined">
-            <mat-card-header>
-              <mat-card-title>Proficiency #{{$index+1}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list role="list">
-                    <mat-list-item role="listitem">Type: {{savedItem.type}}</mat-list-item>
-                    <mat-list-item role="listitem">Name: {{savedItem.name}}</mat-list-item>
-                </mat-list>
-            </mat-card-content>
-            <mat-card-actions>
-                <button (click)="remove(savedItem)" mat-button>
-                    <mat-icon>
-                        delete
-                    </mat-icon>
+          <p-card appearance="outlined">
+            <ng-template #header class="p-card-header">
+              <ng-template #title class="p-card-title">Proficiency #{{$index+1}}</ng-template>
+            </ng-template>
+            <div class="p-card-content">
+                <ul role="list">
+                    <li role="listitem">Type: {{savedItem.type}}</li>
+                    <li role="listitem">Name: {{savedItem.name}}</li>
+                </ul>
+            </div>
+            <div class="p-card-footer">
+                <button (click)="remove(savedItem)" p-button>
+                    <i class="pi pi-delete"></i>
                 </button>
-            </mat-card-actions>
-          </mat-card>
+            </div>
+          </p-card>
         </li>
     }
 </ol>
-<mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>Proficiency:</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <mat-form-field>
-            <mat-label>Type:</mat-label>
-            <mat-select [(value)]="proficiency.type" (selectionChange)="setType()">
-            @for (item of typeList; track $index) {
-                <mat-option [value]="item">
-                    {{item}}
-                </mat-option>
-            }
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Name:</mat-label>
-            <mat-select [(value)]="proficiency.name" (selectionChange)="setName()">
-            @for (item of nameList; track $index) {
-                <mat-option [value]="item">
-                    {{item}}
-                </mat-option>
-            }
-            </mat-select>
-        </mat-form-field>
-    </mat-card-content>
-    <mat-card-actions>
-        <button mat-button [disabled]="disabled" (click)="addProficiency()">
-            <mat-icon>
-                save
-            </mat-icon>
-        </button>
-    </mat-card-actions>
-  </mat-card>
+<form class="example-form" [formGroup]="proficiencyForm"  appearance="outlined">
+    <header class="p-header">
+      <title class="p-title">Proficiency:</title>
+    </header>
+    <div class="p-content">
+        <p-inputgroup>
+            <p-inputgroup-addon>
+                <label class="p-label">Type:</label>
+            </p-inputgroup-addon> 
+            <p-select [options]="getProfTypes()" formControlName="type" (onChange)="setType()"></p-select>
+        </p-inputgroup>
+        <p-inputgroup>
+            <p-inputgroup-addon>
+                <label class="p-label">Name:</label>
+            </p-inputgroup-addon> 
+            <p-select [options]="nameList" formControlName="name" (onChange)="setName()"></p-select>
+        </p-inputgroup>
+    </div>
+    <button [type]="submit" p-button [disabled]="disabled" (click)="addProficiency()">
+        <i class="pi pi-save"></i>
+    </button>
+</form>

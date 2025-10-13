@@ -1,8 +1,8 @@
 <div class="center">
     <div>
     <h1>Create class</h1>
-    <p-inputgroup class="form" [formGroup]="editForm" (ngSubmit)="submit()">
-        <p-iftalabel class="full-width">
+    <form class="form" [formGroup]="editForm" (ngSubmit)="submit()">
+        <p-inputgroup class="full-width">
             <label class="p-label">Name:</label>
             <input pInput type="text" formControlName="name">
             @if (editForm.controls['name'].errors?.['required']) {
@@ -11,18 +11,14 @@
                     <br>
                 </div>
             }
-            
-        </p-iftalabel>
-        <p-iftalabel class="full-width">
+        </p-inputgroup>
+        <br>
+        <p-inputgroup class="full-width">
             <label class="p-label">Hit Dice</label>
-            <p-select formControlName="hitDice">
-                <option value="D6">D6</option>
-                <option value="D8">D8</option>
-                <option value="D10">D10</option>
-                <option value="D12">D12</option>
-            </p-select>
-        </p-iftalabel>
-        <p-iftalabel class="full-width">
+            <p-select formControlName="hitDice" [options] = "getHitDices()"></p-select>
+        </p-inputgroup>
+        <br>
+        <p-inputgroup class="full-width">
             <label class="p-label">Type:</label>
             <textarea maxlength="65535" pInput type="text" formControlName="description"></textarea>
             @if (editForm.controls['description'].errors?.['required']) {
@@ -30,10 +26,10 @@
                     <a class="danger">*Field must not be empty!</a>
                 </div>
             }
-        </p-iftalabel>
+        </p-inputgroup>
             <br>
         <button type="submit">Save</button>
-    </p-inputgroup>
+    </form>
     </div>
 </div>
 <hr>
@@ -65,26 +61,21 @@
       <title class="p-card-title">Proficiency:</title>
     </header>
     <div class="p-card-content">
-        <p-iftalabel>
+        <p-inputgroup>
             <label>Type:</label>
-            <p-select [optionValue]="proficiency.type" (selectionChange)="setType()">
-            @for (item of typeList; track $index) {
-                <option [value]="item">
-                    {{item}}
-                </option>
-            }
+            <p-select [(ngModel)]="proficiency.type" [options]="getProfTypes()" (onChange)="setType()">
             </p-select>
-        </p-iftalabel>
-        <p-iftalabel>
+        </p-inputgroup>
+        <p-inputgroup>
             <label>Name:</label>
-            <p-select [optionValue]="proficiency.name" (selectionChange)="setName()">
+            <p-select [(ngModel)]="proficiency.name" [options]="nameList" (onChange)="setName()">
             @for (item of nameList; track $index) {
                 <option [value]="item">
                     {{item}}
                 </option>
             }
             </p-select>
-        </p-iftalabel>
+        </p-inputgroup>
     </div>
     <div>
         <button p-button [disabled]="disabled" (click)="addProficiency()">

@@ -4,25 +4,38 @@
 <h2>Description:</h2>
 <p><span class="p-text">{{dndClass?.description}}</span></p>
 <a [routerLink]="['/classes/edit',dndClass?.id]">Edit</a><br>
-<a (click)="openDialog()">delete</a><br>
+<button>
+  <i class="pi pi-delete" (click)="openDialog()"></i>Delete
+</button>
+<br>
 <a [routerLink]="['/classes']">Back</a>
 <h1>Proficiencies:</h1>
+
 <div class="table">
-<table mat-table [dataSource]="dataSource">
+<a [routerLink]="['create']">Create proficiency</a>
+<p-table [value]="data"
+  [paginator]="true"
+  [rows]="10"
+  [rowsPerPageOptions]="[5, 10, 20, 30]">
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="name">Name:</th>
+        <th pSortableColumn="type">Type:</th>
+        <th></th>
+      </tr>
+    </ng-template>
 
-    <mat-text-column name="name" headerText="Name:" ></mat-text-column>
-
-    <mat-text-column name="type" headerText="Title:" ></mat-text-column>
-
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
-</table>
-<mat-paginator #paginator
-  [length]="dataSource.data.length"
-  [pageIndex]="0"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 20]"
-  aria-label="Select page">
-</mat-paginator>
+    <ng-template #body let-proficiency>
+        <tr>
+          <td>{{proficiency.name}}</td>
+          <td>{{getTypeAsString(proficiency.type)}}</td>
+          <td>
+            <button extended [routerLink]="['/proficiencies', proficiency.id]">
+            <i class="pi pi-info"></i>
+            Details
+          </button></td>
+        </tr>
+    </ng-template>
+</p-table>
 </div>
 

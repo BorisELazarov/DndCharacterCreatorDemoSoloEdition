@@ -15,6 +15,8 @@ import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
 import { PaginatorState } from "primeng/paginator";
 import { InputText } from "primeng/inputtext";
 import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
+import { CommonMethods } from '../../../core/misc/common-methods';
+import { InputGroupModule } from "primeng/inputgroup";
   
 
 @Component({
@@ -23,7 +25,7 @@ selector: 'app-proficiency',
 
 standalone: true,
 
-imports: [CommonModule, RouterLink, FormsModule, IftaLabelModule, Select, TableModule, InputText],
+imports: [CommonModule, RouterLink, FormsModule, IftaLabelModule, Select, TableModule, InputText, InputGroupModule],
 template:'<h1>Proficiencies:</h1>',
  templateUrl: './proficiency-list.component.html',
 styleUrl: './proficiency-list.component.css'
@@ -34,10 +36,7 @@ export class ProficiencyListComponent implements OnInit, OnDestroy{
 
 private destroy = new Subject<void>();
 
-protected data:Proficiency [] =[];
-protected itemsPerPage = 20;
-protected firstItemIndex = 0;
-
+protected data: Proficiency[] =[];
 protected sort:Sort;
 protected filter:ProficiencyFilter;
 
@@ -60,7 +59,7 @@ constructor(private proficiencyService:ProficiencyService){
   }
 
   getTypes(): string[] {
-    return Object.values(ProfType).map(proftype => proftype.toString()).splice(0, Object.values(ProfType).length/2);
+    return CommonMethods.getProfTypes();
   }
 
   getTypeAsString(profType: ProfType) : string{
@@ -69,11 +68,6 @@ constructor(private proficiencyService:ProficiencyService){
 
   clearType() {
     this.filter.type = undefined;
-  }
-
-  changePage(event: PaginatorState): void {
-    this.firstItemIndex = event.first ?? 0;
-    this.itemsPerPage = event.rows ?? 10;
   }
 
  search():void {

@@ -1,25 +1,6 @@
 
 <main class="main">
-  <p-toolbar>
-    <ng-template #start>
-      <div class="separator">
-        <a [routerLink]="['home']">Home</a>
-        <i class="pi pi-info"></i>
-      </div>
-      <div class="separator">
-        <a [routerLink]="['characters']">Characters</a>
-      </div>
-      <div class="separator">
-        <a [routerLink]="['proficiencies']">Proficiencies</a>
-      </div>
-      <div class="separator">
-        <a [routerLink]="['classes']">Classes</a>
-      </div>
-      <div class="separator">
-        <a [routerLink]="['spells']">Spells</a>
-      </div>
-    </ng-template>
-  </p-toolbar>
+  <p-menubar [model]="items"></p-menubar>
 </main>
 
 <router-outlet />

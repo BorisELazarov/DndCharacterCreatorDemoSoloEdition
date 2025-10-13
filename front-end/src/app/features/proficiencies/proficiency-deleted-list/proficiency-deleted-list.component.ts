@@ -14,11 +14,12 @@ import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
 import { IftaLabelModule } from "primeng/iftalabel";
 import { TableModule } from "primeng/table";
 import { Select } from 'primeng/select';
+import { InputGroupModule } from "primeng/inputgroup";
 
 @Component({
   selector: 'app-proficiency-deleted-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, IftaLabelModule, TableModule, Select],
+  imports: [CommonModule, FormsModule, IftaLabelModule, TableModule, Select, InputGroupModule],
   templateUrl: './proficiency-deleted-list.component.html',
   styleUrl: './proficiency-deleted-list.component.css'
 })
