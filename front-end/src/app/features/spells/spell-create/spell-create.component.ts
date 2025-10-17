@@ -1,26 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, NumberValueAccessor, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Spell } from '../../../shared/interfaces/spell';
 import { Router } from '@angular/router';
-import { MatOptionModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
 import { Subject, takeUntil } from 'rxjs';
+import { InputGroupModule } from "primeng/inputgroup";
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-spell-create',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatSlideToggleModule,
-    MatFormFieldModule, MatInputModule, MatOptionModule, MatSelectModule],
+  imports: [ReactiveFormsModule, CommonModule, InputGroupModule, SelectModule],
   templateUrl: './spell-create.component.html',
   styleUrl: './spell-create.component.css'
 })
 export class SpellCreateComponent implements OnDestroy {
   private destroy= new Subject<void>();
+
+  protected levelOptions: string[] = [
+    'Cantrip', '1st lvl', '2nd lvl', '3rd lvl', '4th lvl',
+    '5th lvl', '6th lvl', '7th lvl', '8th lvl', '9th lvl'
+  ];
+  protected selectedLevel: number = 0;
+  protected durationsTypes: string[] = [ "Instantenous", "Rounds", "Minutes", "Hours", "Days" ];
 
   protected createForm :FormGroup;
   constructor(private spellService: SpellService,
@@ -32,10 +35,18 @@ export class SpellCreateComponent implements OnDestroy {
       components: ['',Validators.required],
       description: ['',Validators.required],
       durationType: ['instant'],
-      durationValue: ['0',Validators.required],
-      level: ['0'],
+      durationValue: ['0', Validators.required],
+      level: ['Cantrip'],
       target: ['',Validators.required]
     });
+  }
+
+  setLevel(): void {
+    if (this.createForm.controls['level'].value === 'Cantrip') {
+      this.selectedLevel = 0;
+    } else {
+      this.selectedLevel = this.createForm.controls['level'].value[0];
+    }
   }
 
   submit() {
@@ -46,7 +57,7 @@ export class SpellCreateComponent implements OnDestroy {
     let description=this.createForm.controls['description'].value;
     let durationValue:number=this.createForm.controls['durationValue'].value;
     let duration:number;
-    let level=this.createForm.controls['level'].value;
+    let level=this.selectedLevel;
     let target=this.createForm.controls['target'].value;;
     switch (this.createForm.controls['durationType'].value) {
       case "rounds":

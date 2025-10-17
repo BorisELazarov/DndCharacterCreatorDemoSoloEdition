@@ -12,7 +12,6 @@ import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { Sort } from '../../../core/sort';
 import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
-import { PaginatorState } from "primeng/paginator";
 import { InputText } from "primeng/inputtext";
 import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
 import { CommonMethods } from '../../../core/misc/common-methods';

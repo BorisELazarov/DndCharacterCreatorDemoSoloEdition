@@ -4,8 +4,8 @@
 <h2>Description:</h2>
 <p><span class="p-text">{{dndClass?.description}}</span></p>
 <a [routerLink]="['/classes/edit',dndClass?.id]">Edit</a><br>
-<button>
-  <i class="pi pi-delete" (click)="openDialog()"></i>Delete
+<button (click)="openDialog()">
+  <i class="pi pi-delete"></i>Delete
 </button>
 <br>
 <a [routerLink]="['/classes']">Back</a>
