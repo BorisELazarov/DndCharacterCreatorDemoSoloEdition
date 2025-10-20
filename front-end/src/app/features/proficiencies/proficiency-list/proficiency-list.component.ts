@@ -21,9 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
-import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
-import { MatListItem } from '@angular/material/list';
   
 
 @Component({
@@ -42,7 +39,6 @@ styleUrl: './proficiency-list.component.css'
 })
 
 export class ProficiencyListComponent implements OnInit, OnDestroy{
-
 private destroy = new Subject<void>();
 
 protected dataSource:MatTableDataSource<Proficiency>=new MatTableDataSource<Proficiency>([]);
@@ -58,7 +54,8 @@ constructor(private proficiencyService:ProficiencyService){
     ascending: true
   };
   this.filter={
-    name:''
+    name:'',
+    type:''
   };
  }
 
@@ -66,14 +63,10 @@ constructor(private proficiencyService:ProficiencyService){
    this.proficiencyService.getAll(this.sort,this.filter).pipe(
     takeUntil(this.destroy)
   ).subscribe(response=>{
-    this.dataSource.data=response.body??[];
-    this.dataSource.paginator=this.paginator;
+   this.dataSource.data=response.body??[];
+   this.dataSource.paginator=this.paginator;
   });
  }
-
-  clearType() {
-    this.filter.type = undefined;
-  }
 
  search():void {
   this.proficiencyService.getAll(this.sort,this.filter).pipe(

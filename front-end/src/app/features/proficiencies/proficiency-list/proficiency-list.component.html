@@ -13,17 +13,9 @@
     </mat-form-field>
     <mat-form-field class="example-form-field">
         <mat-label>Type</mat-label>
-        <mat-select [(value)]="filter.type" (selectionChange)="search()">
-            <mat-option [value]="undefined" aria-selected="filter.type===''">None</mat-option>
-            <mat-option value="SKILL">Skill</mat-option>
-            <mat-option value="ARMOR">Armor</mat-option>
-            <mat-option value="WEAPON">Weapon</mat-option>
-            <mat-option value="SAVING_THROW">Saving Throw</mat-option>
-            <mat-option value="LANGUAGE">Language</mat-option>
-            <mat-option value="TOOL">Tools</mat-option>
-        </mat-select>
+        <input matInput type="text" [(ngModel)]="filter.type" (ngModelChange)="search()">
         @if (filter.type) {
-          <button matSuffix mat-icon-button aria-label="Clear" (click)="clearType()" (click)="search()">
+          <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.type=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
         }
