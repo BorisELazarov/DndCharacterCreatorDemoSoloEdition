@@ -77,8 +77,7 @@ create table class_spells(
 create table proficiencies(
 id bigint primary key auto_increment,
 name nvarchar(50) not null,
-type ENUM('NONE', 'SKILL', 'ARMOR', 'WEAPON', 'SAVING_THROW', 'LANGUAGE', 'TOOL') not null,
-subtype ENUM('NONE', 'ARTISAN', 'GAMING', 'MUSICAL', 'VEHICLE', 'MISCELLANEOUS', 'LIGHT', 'MEDIUM', 'HEAVY', 'SIMPLE', 'MARTIAL') not null,
+type nvarchar(50) not null,
 is_deleted bit not null default 0
 );
 

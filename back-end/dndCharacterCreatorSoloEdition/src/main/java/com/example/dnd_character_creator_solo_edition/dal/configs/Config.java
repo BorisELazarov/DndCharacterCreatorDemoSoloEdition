@@ -2,7 +2,6 @@ package com.example.dnd_character_creator_solo_edition.dal.configs;
 
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
-import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +19,7 @@ public class Config {
         this.proficiencyRepo = proficiencyRepo;
     }
 
-    private Proficiency addProficiency(String name, ProfType type){
+    private Proficiency addProficiency(String name, String type){
         Proficiency proficiency=new Proficiency();
         proficiency.setName(name);
         proficiency.setType(type);
@@ -30,13 +29,14 @@ public class Config {
     private void addProficiencies(){
         if (proficiencyRepo.count()>0)
             return;
+        String language="Language";
         List<Proficiency> proficiencies = new ArrayList<>();
-        proficiencies.add(addProficiency("Common",ProfType.LANGUAGE));
-        proficiencies.add(addProficiency("Elven",ProfType.LANGUAGE));
-        proficiencies.add(addProficiency("Dwarvish", ProfType.LANGUAGE));
-        proficiencies.add(addProficiency("Orcish", ProfType.LANGUAGE));
-        proficiencies.add(addProficiency("Celestial", ProfType.LANGUAGE));
-        proficiencies.add(addProficiency("Infernal", ProfType.LANGUAGE));
+        proficiencies.add(addProficiency("Common",language));
+        proficiencies.add(addProficiency("Elven",language));
+        proficiencies.add(addProficiency("Dwarvish",language));
+        proficiencies.add(addProficiency("Orcish",language));
+        proficiencies.add(addProficiency("Celestial",language));
+        proficiencies.add(addProficiency("Infernal",language));
         proficiencyRepo.saveAll(proficiencies);
     }
 
