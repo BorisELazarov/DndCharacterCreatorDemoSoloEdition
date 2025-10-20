@@ -8,7 +8,6 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacter;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacterPairId;
-import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,7 +49,7 @@ class ProficiencyCharacterMapperTests {
         proficiency.setId(1L);
         proficiency.setIsDeleted(false);
         proficiency.setName("heavy");
-        proficiency.setType(ProfType.ARMOR);
+        proficiency.setType("armor");
         pairId.setProficiency(proficiency);
         ProficiencyCharacter entity=new ProficiencyCharacter();
         entity.setExpertise(false);

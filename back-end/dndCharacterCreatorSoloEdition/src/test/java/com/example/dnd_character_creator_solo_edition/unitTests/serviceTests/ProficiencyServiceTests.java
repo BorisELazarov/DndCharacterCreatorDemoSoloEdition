@@ -8,7 +8,6 @@ import com.example.dnd_character_creator_solo_edition.common.Sort;
 import com.example.dnd_character_creator_solo_edition.dal.entities.BaseEntity;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
-import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
 import com.example.dnd_character_creator_solo_edition.filters.ProficiencyFilter;
@@ -21,7 +20,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,7 +39,7 @@ class ProficiencyServiceTests {
     private List<Proficiency> proficiencies;
     private List<ProficiencyDTO> proficiencyDTOS;
 
-    private Proficiency getProficiency(Long id, String name, ProfType type, boolean isDeleted){
+    private Proficiency getProficiency(Long id, String name, String type, boolean isDeleted){
         Proficiency item=new Proficiency();
         item.setId(id);
         item.setName(name);
@@ -51,42 +49,35 @@ class ProficiencyServiceTests {
     }
 
     @BeforeEach
-    void setUp() {
-        AutoCloseable openMocks = MockitoAnnotations.openMocks(this);
-        try {
-            openMocks.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        proficiency = getProficiency(1L,"Heavy", ProfType.ARMOR,false);
+    void setUp(){
+        MockitoAnnotations.openMocks(this);
+        proficiency = getProficiency(1L,"Heavy","Armor",false);
         proficiencyDTO=new ProficiencyDTO(
                 Optional.of(1L),
                 false,
                 "Heavy",
-                ProfType.ARMOR,
-                null
+                "Armor"
         );
-        createProficiency = getProficiency(null,"Heavy", ProfType.ARMOR,false);
+        createProficiency = getProficiency(null,"Heavy","Armor",false);
         createProficiencyDTO=new ProficiencyDTO(
                 Optional.empty(),
                 false,
                 "Heavy",
-                ProfType.ARMOR,
-                null
+                "Armor"
         );
         proficiencies=List.of(
                 proficiency,
-                getProficiency(2L,"Light",ProfType.ARMOR,false),
-                getProficiency(3L,"Super",ProfType.ARMOR,true),
-                getProficiency(4L,"Medium",ProfType.ARMOR,false),
-                getProficiency(5L,"Range",ProfType.WEAPON,true)
+                getProficiency(2L,"Light","Armor",false),
+                getProficiency(3L,"Super","Armor",true),
+                getProficiency(4L,"Medium","Armor",false),
+                getProficiency(5L,"Range","Attack",true)
         );
         proficiencyDTOS= List.of(
                 proficiencyDTO,
-                new ProficiencyDTO(Optional.of(2L),false,"Light", ProfType.ARMOR, null),
-                new ProficiencyDTO(Optional.of(3L),true,"Super", ProfType.ARMOR, null),
-                new ProficiencyDTO(Optional.of(4L),false,"Medium", ProfType.ARMOR, null),
-                new ProficiencyDTO(Optional.of(5L),true,"Range", ProfType.WEAPON, null)
+                new ProficiencyDTO(Optional.of(2L),false,"Light","Armor"),
+                new ProficiencyDTO(Optional.of(3L),true,"Super","Armor"),
+                new ProficiencyDTO(Optional.of(4L),false,"Medium","Armor"),
+                new ProficiencyDTO(Optional.of(5L),true,"Range","Attack")
         );
         Mockito.when(mapper.toDto(proficiency)).thenReturn(proficiencyDTO);
         Mockito.when(mapper.fromDto(proficiencyDTO)).thenReturn(proficiency);
@@ -112,7 +103,7 @@ class ProficiencyServiceTests {
                 proficiencyDTOS.stream().filter(ProficiencyDTO::isDeleted).toList()
         );
         List<ProficiencyDTO> dtos=service.getProficiencies(true,
-                new SearchProficiencyDTO(new ProficiencyFilter("", ProfType.NONE),new Sort("",true))
+                new SearchProficiencyDTO(new ProficiencyFilter("",""),new Sort("",true))
         );
         assertFalse(dtos.isEmpty());
     }
@@ -128,7 +119,7 @@ class ProficiencyServiceTests {
                 proficiencyDTOS.stream().filter(x->!x.isDeleted()).toList()
         );
         List<ProficiencyDTO> dtos=service.getProficiencies(false,
-                new SearchProficiencyDTO(new ProficiencyFilter("",ProfType.NONE),new Sort("",true))
+                new SearchProficiencyDTO(new ProficiencyFilter("",""),new Sort("",true))
         );
         assertFalse(dtos.isEmpty());
     }

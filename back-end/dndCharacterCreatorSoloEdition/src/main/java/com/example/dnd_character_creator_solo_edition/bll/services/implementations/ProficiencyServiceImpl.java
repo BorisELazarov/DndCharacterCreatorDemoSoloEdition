@@ -6,8 +6,6 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.ProficiencyService;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
-import com.example.dnd_character_creator_solo_edition.enums.ProfSubType;
-import com.example.dnd_character_creator_solo_edition.enums.ProfType;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
@@ -47,15 +45,13 @@ public class ProficiencyServiceImpl implements ProficiencyService {
         CriteriaBuilder cb= em.getCriteriaBuilder();
         CriteriaQuery<Proficiency> criteriaQuery= cb.createQuery(Proficiency.class);
         Root<Proficiency> root= criteriaQuery.from(Proficiency.class);
-        ProfType type = searchProficiencyDTO.filter().type().orElse(ProfType.NONE);
-        ProfSubType subtype = searchProficiencyDTO.filter().subType().orElse(ProfSubType.NONE);
-        criteriaQuery.select(root).where(cb.and(
+        criteriaQuery.select(root)
+                .where(cb.and
+                        (cb.and(
                         cb.equal(root.get("isDeleted"),isDeleted),
-                        cb.like(root.get("name"),cb.parameter(String.class,"name")),
-                        cb.or(
-                                cb.equal(root.get("type"), type),
-                                cb.isTrue(cb.literal(type == ProfType.NONE))
-                        )
+                        cb.like(root.get("name"),cb.parameter(String.class,"name"))
+                        ),
+                        cb.like(root.get("type"),cb.parameter(String.class,"type"))
                 ));
         String sortBy=searchProficiencyDTO.sort().sortBy();
         if (sortBy.isEmpty()){
@@ -68,6 +64,7 @@ public class ProficiencyServiceImpl implements ProficiencyService {
         }
         TypedQuery<Proficiency> query = em.createQuery(criteriaQuery);
         query.setParameter("name","%"+searchProficiencyDTO.filter().name()+"%");
+        query.setParameter("type","%"+searchProficiencyDTO.filter().type()+"%");
         List<Proficiency> proficiencies=query.getResultList();
         return mapper.toDTOs(proficiencies);
     }
