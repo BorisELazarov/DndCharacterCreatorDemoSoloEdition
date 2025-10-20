@@ -15,7 +15,6 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list'
 import { ClassService } from '../../../shared/services/class-service/class.service';
 import { Subject, takeUntil } from 'rxjs';
-import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
 
 @Component({
   selector: 'app-class-create',
@@ -36,7 +35,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
   protected dndClass:DndClass;
   protected proficiency:Proficiency;
 
-  protected typeList:ProfType[]=[];
+  protected typeList:string[]=[];
   protected nameList:string[]=[];
   protected proficiencies:Proficiency[]=[];
 
@@ -56,7 +55,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     }
     this.proficiency={
       name:'',
-      type: ProfType.NONE
+      type:''
     }
   }
 
@@ -116,7 +115,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
   private reset():void{
     this.proficiency={
       name:'',
-      type:ProfType.NONE
+      type:''
     }
     this.disabled=true;
     this.typeList=this.proficiencies.flatMap(x=>x.type);

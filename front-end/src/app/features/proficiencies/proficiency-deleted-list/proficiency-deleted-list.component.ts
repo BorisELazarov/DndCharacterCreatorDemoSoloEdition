@@ -21,8 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-import { ProfType } from '../../../shared/enums/prof-enums/prof-type';
-import { ProfSubtype } from '../../../shared/enums/prof-enums/prof-subtype';
 
 @Component({
   selector: 'app-proficiency-deleted-list',
@@ -48,10 +46,9 @@ export class ProficiencyDeletedListComponent implements OnDestroy{
       sortBy:'',
       ascending: true
     };
-    this.filter = {
+    this.filter={
       name:'',
-      type: ProfType.NONE,
-      subtype: ProfSubtype.NONE
+      type:''
     };
    }
   
@@ -63,7 +60,6 @@ export class ProficiencyDeletedListComponent implements OnDestroy{
      this.dataSource.paginator=this.paginator;
     });
    }
-
    openDialog(id: number) {
     if(confirm("Are you sure to delete this once and for all?")) {
       this.delete(id);
@@ -88,10 +84,6 @@ export class ProficiencyDeletedListComponent implements OnDestroy{
     this.dataSource.data=this.dataSource.data.filter(x=>x.id!=id);
    }
   
-   clearType(): void {
-    this.filter.type = ProfType.NONE;
-   }
-
    search():void {
     this.proficiencyService.getAllDeleted(this.sort,this.filter).pipe(
       takeUntil(this.destroy)
