@@ -122,6 +122,19 @@ create table proficiency_characters(
     expertise bit not null default 0
 );
 
+create table features(
+	id bigint primary key auto_increment,
+	name nvarchar(50) not null,
+    description text not null
+);
 
-
-
+create table class_features(
+	feature_id bigint not null,
+    foreign key(feature_id)
+    references features(id),
+    class_id bigint not null,
+    foreign key(class_id)
+    references classes(id),
+    level int not null default 1,
+    primary key(feature_id, class_id)
+);
