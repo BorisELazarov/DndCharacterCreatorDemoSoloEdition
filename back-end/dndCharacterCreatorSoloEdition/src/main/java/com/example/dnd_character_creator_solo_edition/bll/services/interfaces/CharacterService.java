@@ -6,8 +6,7 @@ import com.example.dnd_character_creator_solo_edition.bll.dtos.characters.Search
 import java.util.List;
 
 public interface CharacterService {
-    List<CharacterDTO> getCharacters(Long userId, boolean isDeleted,
-                                     SearchCharacterDTO searchCharacterDTO);
+    List<CharacterDTO> getCharacters(boolean isDeleted, SearchCharacterDTO searchCharacterDTO);
     CharacterDTO addCharacter(CharacterDTO dto);
     void restoreCharacter(Long id);
     CharacterDTO editCharacter(CharacterDTO dto);

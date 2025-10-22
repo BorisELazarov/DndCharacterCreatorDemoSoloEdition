@@ -26,7 +26,7 @@ public class ProficiencyCharacterMapperImpl implements ProficiencyCharacterMappe
     public ProficiencyCharacter fromDto(ProficiencyCharacterDTO dto, Character character) {
         ProficiencyCharacter proficiency=new ProficiencyCharacter();
         ProficiencyCharacterPairId id=new ProficiencyCharacterPairId();
-        id.setProficiency(mapper.fromDto(dto.proficiency()));
+        id.setProficiency(mapper.fromDto(dto.proficiency(), null));
         id.setCharacter(character);
         proficiency.setId(id);
         proficiency.setExpertise(dto.expertise());

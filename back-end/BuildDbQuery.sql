@@ -74,11 +74,31 @@ create table class_spells(
     primary key(class_id, spell_id)
 );
 
+create table proficiency_types(
+	id bigint primary key auto_increment,
+	name nvarchar(50) not null,
+	is_deleted bit not null default 0
+);
+
+create table proficiency_subtypes(
+	id bigint primary key auto_increment,
+	name nvarchar(50) not null,
+	type_id bigint not null,
+    foreign key(type_id)
+    references proficiency_types(id),
+	is_deleted bit not null default 0
+);
+
 create table proficiencies(
-id bigint primary key auto_increment,
-name nvarchar(50) not null,
-type nvarchar(50) not null,
-is_deleted bit not null default 0
+	id bigint primary key auto_increment,
+	name nvarchar(50) not null,
+	type_id bigint not null,
+	subtype_id bigint null,
+    foreign key(type_id)
+    references proficiency_types(id),
+    foreign key(subtype_id)
+    references proficiency_subtypes(id),
+	is_deleted bit not null default 0
 );
 
 create table proficiency_classes(

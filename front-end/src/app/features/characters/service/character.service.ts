@@ -14,10 +14,10 @@ export class CharacterService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getAllDeleted(sort: Sort, filter: Filter, email:string):Observable<HttpResponse<CharacterListItem[]>> {
+  getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
       .post<CharacterListItem[]>(
-        this.url+'/getForUser/deleted/'+email,{
+        this.url+'/getForUser/deleted', {
           filter:filter,
           sort:sort
         },
@@ -25,10 +25,10 @@ export class CharacterService {
       );
   }
 
-  getAll(sort: Sort, filter: Filter, email:string):Observable<HttpResponse<CharacterListItem[]>> {
+  getAll(sort: Sort, filter: Filter):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
       .post<CharacterListItem[]>(
-        this.url+'/getForUser/'+email,{
+        this.url+'/getForUser', {
           filter:filter,
           sort:sort
         },

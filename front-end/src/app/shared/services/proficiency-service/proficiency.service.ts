@@ -53,4 +53,7 @@ export class ProficiencyService {
   public restore(id:number):Observable<Proficiency>{
     return this.httpClient.put<Proficiency>(this.url+"/restore/"+id,null);
   }
+  public getTypes(): Observable<HttpResponse<string[]>> {
+    return this.httpClient.get<string[]>(this.url + "/getTypes", {observe:'response'});
+  }
 }

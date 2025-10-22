@@ -18,8 +18,6 @@ public class DNDclass extends BaseEntity implements Serializable {
     private String description;
     @Column(name = "hit_dice", nullable = false)
     @Enumerated(EnumType.STRING)
-//    @Min(value = 0, message = "The hit dice must be at least 6")
-//    @Max(value = 3, message = "The hit dice must be at max 12")
     private HitDiceEnum hitDice;
     @ManyToMany
     @JoinTable(

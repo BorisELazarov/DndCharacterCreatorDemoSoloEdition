@@ -5,6 +5,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.implementation
 import com.example.dnd_character_creator_solo_edition.bll.mappers.implementations.ProficiencyMapperImpl;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyCharacterMapper;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacter;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacterPairId;
@@ -13,7 +14,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProficiencyCharacterMapperTests {
-    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl();
+    private final ProfTypeMapper profTypeMapper = new ProfTypeMapperImpl();
+    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl(profTypeMapper);
     private final ProficiencyCharacterMapper proficiencyCharacterMapper
             =new ProficiencyCharacterMapperImpl(proficiencyMapper);
 
@@ -49,7 +51,9 @@ class ProficiencyCharacterMapperTests {
         proficiency.setId(1L);
         proficiency.setIsDeleted(false);
         proficiency.setName("heavy");
-        proficiency.setType("armor");
+        ProfType profType = new ProfType();
+        profType.setName("armor");
+        proficiency.setType(profType);
         pairId.setProficiency(proficiency);
         ProficiencyCharacter entity=new ProficiencyCharacter();
         entity.setExpertise(false);
@@ -57,8 +61,8 @@ class ProficiencyCharacterMapperTests {
         ProficiencyCharacterDTO dto=proficiencyCharacterMapper.toDto(entity);
         dto.proficiency().id().ifPresent(id->assertEquals(proficiency.getId(),id));
         assertEquals(proficiency.getIsDeleted(),dto.proficiency().isDeleted());
-        assertEquals(proficiency.getName(),dto.proficiency().name());
-        assertEquals(proficiency.getType(),dto.proficiency().type());
-        assertEquals(entity.getExpertise(),dto.expertise());
+        assertEquals(proficiency.getName(), dto.proficiency().name());
+        assertEquals(proficiency.getType(), dto.proficiency().type());
+        assertEquals(entity.getExpertise(), dto.expertise());
     }
 }

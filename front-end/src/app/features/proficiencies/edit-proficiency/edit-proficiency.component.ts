@@ -7,19 +7,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ActivatedRoute, Router} from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { MatSelectModule } from "@angular/material/select";
 
 @Component({
   selector: 'app-edit-proficiency',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule,
-    MatFormFieldModule, MatInputModule],
+    MatFormFieldModule, MatInputModule, MatSelectModule],
   templateUrl: './edit-proficiency.component.html',
   styleUrl: './edit-proficiency.component.css'
 })
 export class EditProficiencyComponent implements OnInit, OnDestroy {
   private destroy=new Subject<void>();
-  protected editForm :FormGroup;
-  protected proficiency:Proficiency|undefined;
+  protected editForm: FormGroup;
+  protected proficiency: Proficiency|undefined;
+  protected types: string[] = [];
   constructor(private proficiencyService: ProficiencyService,
     fb: FormBuilder, route: ActivatedRoute, private router:Router) {
     let id=Number(route.snapshot.params['id']);
@@ -38,6 +40,9 @@ export class EditProficiencyComponent implements OnInit, OnDestroy {
       this.proficiency=response.body??undefined;
       this.editForm.controls['name'].setValue(this.proficiency?.name);
       this.editForm.controls['type'].setValue(this.proficiency?.type);
+    });
+    this.proficiencyService.getTypes().pipe(takeUntil(this.destroy)).subscribe(response => {
+      this.types = response.body ?? [];
     });
   }
 

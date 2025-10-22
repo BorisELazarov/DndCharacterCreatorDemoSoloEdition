@@ -12,10 +12,16 @@
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Type:</mat-label>
-            <input matInput type="text" formControlName="type">
-            <div *ngIf="editForm.controls['type'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
+            <mat-select formControlName="type" [value]="editForm.controls['type'].value">
+                @for (item of types; track $index) {
+                    <mat-option [value]="item">{{item}}</mat-option>
+                }
+            </mat-select>
+            @if (editForm.controls['type'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+            }
         </mat-form-field>
            <br>
         <button type="submit">Save</button>

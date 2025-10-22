@@ -1,4 +1,4 @@
-package com.example.dnd_character_creator_solo_edition.dal.repos;
+package com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies;
 
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import org.springframework.data.jpa.repository.JpaRepository;

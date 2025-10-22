@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
+import { CommonMethods } from '../../../core/misc/common-methods';
   
 
 @Component({
@@ -47,6 +48,7 @@ columnsToDisplay : string[] = ['name', 'type' ,'actions'];
 @ViewChild(MatPaginator) paginator!: MatPaginator;
 protected sort:Sort;
 protected filter:ProficiencyFilter;
+protected types: string[] = [];
 
 constructor(private proficiencyService:ProficiencyService){
   this.sort={
@@ -62,10 +64,11 @@ constructor(private proficiencyService:ProficiencyService){
  ngOnInit(): void {
    this.proficiencyService.getAll(this.sort,this.filter).pipe(
     takeUntil(this.destroy)
-  ).subscribe(response=>{
-   this.dataSource.data=response.body??[];
-   this.dataSource.paginator=this.paginator;
-  });
+   ).subscribe(response=>{
+    this.dataSource.data=response.body??[];
+    this.dataSource.paginator=this.paginator;
+    this.types = CommonMethods.removeDuplicates(this.dataSource.data.flatMap(prof => prof.type));
+   });
  }
 
  search():void {

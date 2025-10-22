@@ -16,7 +16,8 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CharacterMapperTest {
-    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl();
+    private final  ProfTypeMapper profTypeMapper = new ProfTypeMapperImpl();
+    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl(profTypeMapper);
     private final ClassMapper classMapper=new ClassMapperImpl(proficiencyMapper);
     private final SpellMapper spellMapper=new SpellMapperImpl();
     private final CharacterSpellMapper characterSpellMapper
