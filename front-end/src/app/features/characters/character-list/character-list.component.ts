@@ -12,7 +12,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterListItem } from '../list-items/character-list-item';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -36,7 +35,6 @@ export class CharacterListComponent implements OnInit, OnDestroy{
   protected filter:Filter;
   
   constructor(private characterService:CharacterService,
-    private localStorageService: LocalStorageService,
      private route:ActivatedRoute){
     this.sort={
       sortBy:'',
@@ -49,7 +47,7 @@ export class CharacterListComponent implements OnInit, OnDestroy{
    }
   
    ngOnInit(): void {
-     this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").pipe(
+     this.characterService.getAll(this.sort,this.filter).pipe(
       takeUntil(this.destroy)
     ).subscribe(response=>{
      this.dataSource.data=response.body??[];
@@ -73,7 +71,7 @@ export class CharacterListComponent implements OnInit, OnDestroy{
   }
   
   search():void {
-    this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").pipe(
+    this.characterService.getAll(this.sort,this.filter).pipe(
       takeUntil(this.destroy)
     ).subscribe(response=>{
      this.dataSource.data=response.body??[];

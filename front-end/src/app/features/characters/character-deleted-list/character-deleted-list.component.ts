@@ -12,7 +12,6 @@ import { CharacterListItem } from '../list-items/character-list-item';
 import { Filter } from '../filter';
 import { CharacterService } from '../service/character.service';
 import { Sort } from '../../../core/sort';
-import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -35,9 +34,7 @@ export class CharacterDeletedListComponent  implements OnInit, OnDestroy {
   protected sort:Sort;
   protected filter:Filter;
   
-  constructor(private characterService:CharacterService,
-    private localStorageService:LocalStorageService
-  ){
+  constructor(private characterService:CharacterService){
     this.sort={
       sortBy:'',
       ascending: true
@@ -49,8 +46,7 @@ export class CharacterDeletedListComponent  implements OnInit, OnDestroy {
    }
   
    ngOnInit(): void {
-     this.characterService.getAllDeleted(this.sort,this.filter,
-      this.localStorageService.getItem("id")??'').pipe(
+     this.characterService.getAllDeleted(this.sort,this.filter).pipe(
         takeUntil(this.destroy)
       ).subscribe(response=>{
      this.dataSource.data=response.body??[];
@@ -87,9 +83,7 @@ export class CharacterDeletedListComponent  implements OnInit, OnDestroy {
    }
   
    search():void {
-    this.characterService.getAll(this.sort,this.filter,
-      this.localStorageService.getItem("id")??""
-    ).pipe(
+    this.characterService.getAll(this.sort,this.filter).pipe(
       takeUntil(this.destroy)
     ).subscribe(response=>{
      this.dataSource.data=response.body??[];

@@ -3,12 +3,14 @@ package com.example.dnd_character_creator_solo_edition.bll.services.implementati
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.SearchClassDTO;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ClassMapper;
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.ClassService;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProfTypeRepo;
 import com.example.dnd_character_creator_solo_edition.enums.HitDiceEnum;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassDTO;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ClassRepo;
-import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
@@ -21,6 +23,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,14 +35,16 @@ public class ClassServiceImpl implements ClassService {
     private final ClassRepo classRepo;
     private final ProficiencyRepo proficiencyRepo;
     private final ClassMapper mapper;
+    private final ProfTypeRepo profTypeRepo;
     @PersistenceContext
     private EntityManager em;
 
-    public ClassServiceImpl(@NotNull ClassRepo classRepo, @NotNull ProficiencyRepo proficiencyRepo,
-                            @NotNull ClassMapper mapper) {
+    @Autowired
+    public ClassServiceImpl(ClassRepo classRepo, ProficiencyRepo proficiencyRepo, ClassMapper mapper, ProfTypeRepo profTypeRepo) {
         this.classRepo = classRepo;
         this.proficiencyRepo = proficiencyRepo;
         this.mapper = mapper;
+        this.profTypeRepo = profTypeRepo;
     }
 
     @PostConstruct
@@ -70,10 +75,17 @@ public class ClassServiceImpl implements ClassService {
         return dnDclass;
     }
 
+    private ProfType addProfType(String language) {
+        ProfType profType = new ProfType();
+        profType.setName(language);
+        return profTypeRepo.save(profType);
+    }
+
     private void seedProficiencies() {
         if (proficiencyRepo.count() > 0)
             return;
-        String type = "Language";
+        String language = "Language";
+        ProfType type = profTypeRepo.findByName(language).orElseGet(() -> addProfType(language));
         List<Proficiency> proficiencies = new ArrayList<>();
         proficiencies.add(getProficiency("Common", type));
         proficiencies.add(getProficiency("Elven", type));
@@ -81,7 +93,8 @@ public class ClassServiceImpl implements ClassService {
         proficiencies.add(getProficiency("Orcish", type));
         proficiencies.add(getProficiency("Celestial", type));
         proficiencies.add(getProficiency("Infernal", type));
-        type = "Skill";
+        String skill = "Skill";
+        type = profTypeRepo.findByName(skill).orElseGet(() -> addProfType(skill));
         proficiencies.add(getProficiency("Athletics", type));
         proficiencies.add(getProficiency("Acrobatics", type));
         proficiencies.add(getProficiency("Arcana", type));
@@ -91,7 +104,7 @@ public class ClassServiceImpl implements ClassService {
         proficiencyRepo.saveAll(proficiencies);
     }
 
-    private Proficiency getProficiency(String name, String type) {
+    private Proficiency getProficiency(String name, ProfType type) {
         Proficiency proficiency = new Proficiency();
         proficiency.setName(name);
         proficiency.setType(type);

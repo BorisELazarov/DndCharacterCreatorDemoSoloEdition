@@ -300,14 +300,10 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   setLevel():void{
     let spells:Spell[]=this.spellList.filter(x=>x.level===this.spellLevel);
     this.nameList=spells.flatMap(x=>x.name);
-    this.nameList=this.removeDuplicates(this.nameList);
+    this.nameList=CommonMethods.removeDuplicates(this.nameList);
     if (this.nameList.length<1) {
       this.reset();
     }
-  }
-
-  removeDuplicates(list:any[]):any[]{
-    return list.filter((el, i, a) => i === a.indexOf(el));
   }
 
   setName():void{
@@ -340,7 +336,7 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     let spells:Spell[]=this.spellList.filter(x=>x.level.toString()===this.spellLevel.toString());
 
     this.nameList=spells.flatMap(x=>x.name);
-    this.nameList=this.removeDuplicates(this.nameList);
+    this.nameList=CommonMethods.removeDuplicates(this.nameList);
   }
 
   submit():void {

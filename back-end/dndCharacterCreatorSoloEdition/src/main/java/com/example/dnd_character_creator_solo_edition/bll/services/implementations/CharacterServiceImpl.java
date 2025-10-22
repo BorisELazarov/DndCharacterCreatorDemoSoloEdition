@@ -7,6 +7,7 @@ import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.Ch
 import com.example.dnd_character_creator_solo_edition.dal.entities.Character;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
 import com.example.dnd_character_creator_solo_edition.dal.repos.CharacterRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
@@ -20,25 +21,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
     private static final String NOT_FOUND_MESSAGE = "The character is not found!";
+    private static final String PROF_NOT_FOUND_MESSAGE = "The proficiency is not found!";
     private static final String NAME_TAKEN_MESSAGE = "There is already character named like that!";
     private final CharacterRepo characterRepo;
     private final CharacterMapper mapper;
     @PersistenceContext
     private EntityManager em;
+    private final ProficiencyRepo proficiencyRepo;
 
     public CharacterServiceImpl(@NotNull CharacterRepo characterRepo,
-                                @NotNull CharacterMapper mapper) {
+                                @NotNull CharacterMapper mapper,
+                                ProficiencyRepo proficiencyRepo) {
         this.characterRepo = characterRepo;
         this.mapper = mapper;
+        this.proficiencyRepo = proficiencyRepo;
     }
 
     @Override
-    public List<CharacterDTO> getCharacters(Long userId,
-                                            boolean isDeleted,
+    public List<CharacterDTO> getCharacters(boolean isDeleted,
                                             SearchCharacterDTO searchCharacterDTO) {
         CriteriaBuilder cb= em.getCriteriaBuilder();
         CriteriaQuery<Character> criteriaQuery= cb.createQuery(Character.class);
@@ -91,6 +96,16 @@ public class CharacterServiceImpl implements CharacterService {
         if (characterRepo.findByName(dcharacterDTO.name()).isPresent())
             throw new NameAlreadyTakenException(NAME_TAKEN_MESSAGE);
         Character character = characterRepo.save(mapper.fromDto(dcharacterDTO));
+        character.getDNDclass().setProficiencies(character.getDNDclass().getProficiencies().stream().map(
+                prof -> proficiencyRepo.findById(prof.getId()).orElseThrow(() -> new NotFoundException(PROF_NOT_FOUND_MESSAGE))
+        ).collect(Collectors.toSet()));
+        character.getProficiencyCharacters()
+                .forEach(
+                        profChar -> profChar.getId().setProficiency(
+                                proficiencyRepo.findById(profChar.getId().getProficiency().getId())
+                                .orElseThrow(() -> new NotFoundException(PROF_NOT_FOUND_MESSAGE))
+                        )
+                );
         return mapper.toDto(character);
     }
 

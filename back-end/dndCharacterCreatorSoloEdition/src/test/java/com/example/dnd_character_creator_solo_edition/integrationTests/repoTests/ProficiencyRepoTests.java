@@ -1,8 +1,10 @@
 package com.example.dnd_character_creator_solo_edition.integrationTests.repoTests;
 
 import com.example.dnd_character_creator_solo_edition.dal.entities.BaseEntity;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
-import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProfTypeRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -22,17 +24,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ProficiencyRepoTests {
     @Autowired
     private final ProficiencyRepo proficiencyRepo;
+    @Autowired
+    private final ProfTypeRepo profTypeRepo;
 
 
     @Autowired
-    public ProficiencyRepoTests(ProficiencyRepo proficiencyRepo) {
+    public ProficiencyRepoTests(ProficiencyRepo proficiencyRepo, ProfTypeRepo profTypeRepo) {
         this.proficiencyRepo = proficiencyRepo;
+        this.profTypeRepo = profTypeRepo;
     }
 
     @BeforeAll
-    static void seedData(@Autowired ProficiencyRepo seedRepo){
-        String language="Language";
+    static void seedData(@Autowired ProficiencyRepo seedRepo, @Autowired ProfTypeRepo typeRepo){
         List<Proficiency> proficiencies = new ArrayList<>();
+        ProfType language = addProfType("Language", typeRepo);
         proficiencies.add(seedProficiency("Common",language));
         proficiencies.add(seedProficiency("Elven",language));
         proficiencies.add(seedProficiency("Dwarvish",language));
@@ -42,7 +47,13 @@ class ProficiencyRepoTests {
         seedRepo.saveAll(proficiencies);
     }
 
-    private static Proficiency seedProficiency(String name, String type){
+    private static ProfType addProfType(String language, ProfTypeRepo typeRepo) {
+        ProfType profType = new ProfType();
+        profType.setName(language);
+        return typeRepo.save(profType);
+    }
+
+    private static Proficiency seedProficiency(String name, ProfType type){
         Proficiency proficiency=new Proficiency();
         proficiency.setName(name);
         proficiency.setType(type);

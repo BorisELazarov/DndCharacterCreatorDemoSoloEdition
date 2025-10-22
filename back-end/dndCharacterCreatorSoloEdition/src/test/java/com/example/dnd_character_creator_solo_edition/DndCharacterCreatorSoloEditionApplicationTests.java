@@ -1,6 +1,6 @@
 package com.example.dnd_character_creator_solo_edition;
 
-import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;

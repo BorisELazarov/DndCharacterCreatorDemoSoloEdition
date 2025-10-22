@@ -3,6 +3,7 @@ package com.example.dnd_character_creator_solo_edition.unitTests.mapperTests;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.proficiencies.ProficiencyDTO;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.implementations.ProficiencyMapperImpl;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,16 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProficiencyMapperTests {
-    private final ProficiencyMapper mapper=new ProficiencyMapperImpl();
+    private final ProfTypeMapper profTypeMapper = new ProfTypeMapperImpl();
+    private final ProficiencyMapper mapper=new ProficiencyMapperImpl(profTypeMapper);
+
+    private ProfType getType(Long id, boolean isDeleted, String name) {
+        ProfType type = new ProfType();
+        type.setId(id);
+        type.setIsDeleted(isDeleted);
+        type.setName(name);
+        return type;
+    }
 
     @Test
     void fromDtoAreEquals(){
@@ -26,7 +36,7 @@ class ProficiencyMapperTests {
         heavyArmor.id().ifPresent(id-> assertEquals(id,proficiency.getId()));
         assertEquals(heavyArmor.isDeleted(),proficiency.getIsDeleted());
         assertEquals(heavyArmor.name(),proficiency.getName());
-        assertEquals(heavyArmor.type(),proficiency.getType());
+        assertEquals(heavyArmor.type(), proficiency.getType().getName());
     }
 
     @Test
@@ -35,13 +45,13 @@ class ProficiencyMapperTests {
         proficiency.setId(1L);
         proficiency.setIsDeleted(false);
         proficiency.setName("heavy");
-        proficiency.setType("armor");
+        proficiency.setType(getType(null, false, "armor"));
         ProficiencyDTO dto=mapper.toDto(proficiency);
         assertTrue(dto.id().isPresent());
         assertEquals(proficiency.getId(),dto.id().get());
         assertEquals(proficiency.getIsDeleted(),dto.isDeleted());
         assertEquals(proficiency.getName(),dto.name());
-        assertEquals(proficiency.getType(),dto.type());
+        assertEquals(proficiency.getType().getName(),dto.type().name());
     }
 
     @Test
@@ -66,22 +76,23 @@ class ProficiencyMapperTests {
             dto.id().ifPresent(id-> assertEquals(id,proficiency.getId()));
             assertEquals(dto.isDeleted(),proficiency.getIsDeleted());
             assertEquals(dto.name(),proficiency.getName());
-            assertEquals(dto.type(),proficiency.getType());
+            assertEquals(dto.type(),proficiency.getType().getName());
         }
     }
 
     @Test
     void toDTOsAreEquals(){
+        ProfType armor = getType(1L, false, "armor");
         Proficiency heavyArmor=new Proficiency();
         heavyArmor.setId(5L);
         heavyArmor.setIsDeleted(true);
         heavyArmor.setName("heavy");
-        heavyArmor.setType("burden");
+        heavyArmor.setType(armor);
         Proficiency lightArmor=new Proficiency();
         lightArmor.setId(2L);
         lightArmor.setIsDeleted(false);
         lightArmor.setName("light");
-        lightArmor.setType("annoyance");
+        lightArmor.setType(armor);
         List<Proficiency> proficiencies=List.of(heavyArmor, lightArmor);
         List<ProficiencyDTO> proficiencyDTOS=mapper.toDTOs(proficiencies);
         for (int i = 0; i <  proficiencies.size(); i++) {
@@ -90,7 +101,7 @@ class ProficiencyMapperTests {
             dto.id().ifPresent(id-> assertEquals(proficiency.getId(), id));
             assertEquals(proficiency.getIsDeleted(),dto.isDeleted());
             assertEquals(proficiency.getName(),dto.name());
-            assertEquals(proficiency.getType(),dto.type());
+            assertEquals(proficiency.getType().getName(),dto.type().name());
         }
     }
 }

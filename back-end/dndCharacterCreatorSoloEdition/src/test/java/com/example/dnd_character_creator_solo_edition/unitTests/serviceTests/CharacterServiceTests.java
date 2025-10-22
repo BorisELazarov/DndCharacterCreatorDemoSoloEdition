@@ -131,7 +131,7 @@ class CharacterServiceTests {
         ).thenReturn(
                 characterDTOS.stream().filter(CharacterDTO::isDeleted).toList()
         );
-        List<CharacterDTO> dtos=service.getCharacters(1L,true,
+        List<CharacterDTO> dtos=service.getCharacters(true,
                 new SearchCharacterDTO(
                         new CharacterFilter("",Optional.empty(),""),
                         new Sort("",true)
@@ -149,7 +149,7 @@ class CharacterServiceTests {
         ).thenReturn(
                 characterDTOS.stream().filter(x->!x.isDeleted()).toList()
         );
-        List<CharacterDTO> dtos=service.getCharacters(1L,false,
+        List<CharacterDTO> dtos=service.getCharacters(false,
                 new SearchCharacterDTO(
                         new CharacterFilter("",Optional.empty(),""),
                         new Sort("",true)
@@ -165,7 +165,7 @@ class CharacterServiceTests {
         ).thenReturn(character);
         Mockito.when(mapper.fromDto(createCharacterDTO)).thenReturn(createCharacter);
         CharacterDTO dto=service.addCharacter(createCharacterDTO);
-        assertEquals(dto,characterDTO);
+        assertEquals(dto, characterDTO);
     }
 
     @Test

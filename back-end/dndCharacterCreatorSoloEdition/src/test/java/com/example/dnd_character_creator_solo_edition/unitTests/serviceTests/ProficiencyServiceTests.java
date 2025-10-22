@@ -6,8 +6,9 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.bll.services.implementations.ProficiencyServiceImpl;
 import com.example.dnd_character_creator_solo_edition.common.Sort;
 import com.example.dnd_character_creator_solo_edition.dal.entities.BaseEntity;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
-import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;
 import com.example.dnd_character_creator_solo_edition.filters.ProficiencyFilter;
@@ -39,7 +40,15 @@ class ProficiencyServiceTests {
     private List<Proficiency> proficiencies;
     private List<ProficiencyDTO> proficiencyDTOS;
 
-    private Proficiency getProficiency(Long id, String name, String type, boolean isDeleted){
+    private ProfType getTypeArmorUndeletedId1() {
+        ProfType type = new ProfType();
+        type.setId(1L);
+        type.setIsDeleted(false);
+        type.setName("Armor");
+        return type;
+    }
+
+    private Proficiency getProficiency(Long id, String name, ProfType type, boolean isDeleted){
         Proficiency item=new Proficiency();
         item.setId(id);
         item.setName(name);
@@ -51,14 +60,15 @@ class ProficiencyServiceTests {
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        proficiency = getProficiency(1L,"Heavy","Armor",false);
+        ProfType armor = getTypeArmorUndeletedId1();
+        proficiency = getProficiency(1L,"Heavy", armor,false);
         proficiencyDTO=new ProficiencyDTO(
                 Optional.of(1L),
                 false,
                 "Heavy",
                 "Armor"
         );
-        createProficiency = getProficiency(null,"Heavy","Armor",false);
+        createProficiency = getProficiency(null,"Heavy",armor,false);
         createProficiencyDTO=new ProficiencyDTO(
                 Optional.empty(),
                 false,
@@ -67,17 +77,17 @@ class ProficiencyServiceTests {
         );
         proficiencies=List.of(
                 proficiency,
-                getProficiency(2L,"Light","Armor",false),
-                getProficiency(3L,"Super","Armor",true),
-                getProficiency(4L,"Medium","Armor",false),
-                getProficiency(5L,"Range","Attack",true)
+                getProficiency(2L,"Light",armor,false),
+                getProficiency(3L,"Super",armor,true),
+                getProficiency(4L,"Medium",armor,false),
+                getProficiency(5L,"Range",armor,true)
         );
         proficiencyDTOS= List.of(
                 proficiencyDTO,
-                new ProficiencyDTO(Optional.of(2L),false,"Light","Armor"),
-                new ProficiencyDTO(Optional.of(3L),true,"Super","Armor"),
-                new ProficiencyDTO(Optional.of(4L),false,"Medium","Armor"),
-                new ProficiencyDTO(Optional.of(5L),true,"Range","Attack")
+                new ProficiencyDTO(Optional.of(2L),false,"Light", "Armor"),
+                new ProficiencyDTO(Optional.of(3L),true,"Super", "Armor"),
+                new ProficiencyDTO(Optional.of(4L),false,"Medium", "Armor"),
+                new ProficiencyDTO(Optional.of(5L),true,"Range", "Armor")
         );
         Mockito.when(mapper.toDto(proficiency)).thenReturn(proficiencyDTO);
         Mockito.when(mapper.fromDto(proficiencyDTO)).thenReturn(proficiency);

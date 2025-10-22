@@ -6,7 +6,7 @@ import com.example.dnd_character_creator_solo_edition.bll.services.implementatio
 import com.example.dnd_character_creator_solo_edition.dal.entities.BaseEntity;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
 import com.example.dnd_character_creator_solo_edition.dal.repos.ClassRepo;
-import com.example.dnd_character_creator_solo_edition.dal.repos.ProficiencyRepo;
+import com.example.dnd_character_creator_solo_edition.dal.repos.proficiencies.ProficiencyRepo;
 import com.example.dnd_character_creator_solo_edition.enums.HitDiceEnum;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotSoftDeletedException;

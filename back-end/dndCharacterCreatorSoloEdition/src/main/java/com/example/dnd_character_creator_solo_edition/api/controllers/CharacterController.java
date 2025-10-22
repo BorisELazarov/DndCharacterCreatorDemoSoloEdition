@@ -20,22 +20,18 @@ public class CharacterController {
         this.service = service;
     }
 
-    @PostMapping(path="/getForUser/{userId}")
-    public ResponseEntity<List<CharacterDTO>> getCharacters(
-            @PathVariable Long userId,
-            @RequestBody SearchCharacterDTO searchCharacterDTO){
+    @PostMapping(path="/getForUser")
+    public ResponseEntity<List<CharacterDTO>> getCharacters(@RequestBody SearchCharacterDTO searchCharacterDTO){
         return new ResponseEntity<>(
-                service.getCharacters(userId,false, searchCharacterDTO),
+                service.getCharacters(false, searchCharacterDTO),
             HttpStatus.OK
         );
     }
 
     @PostMapping(path = "/getForUser/deleted/{userId}")
-    public ResponseEntity<List<CharacterDTO>> getDeletedCharacters(
-            @PathVariable Long userId,
-            @RequestBody SearchCharacterDTO searchCharacterDTO){
+    public ResponseEntity<List<CharacterDTO>> getDeletedCharacters(@RequestBody SearchCharacterDTO searchCharacterDTO){
         return new ResponseEntity<>(
-                service.getCharacters(userId,true, searchCharacterDTO),
+                service.getCharacters(true, searchCharacterDTO),
                 HttpStatus.OK
         );
     }

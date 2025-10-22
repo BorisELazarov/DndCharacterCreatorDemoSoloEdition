@@ -14,4 +14,5 @@ public interface ProficiencyService {
     void hardDeleteProficiency(Long id);
     void restoreProficiency(Long id);
     List<ProficiencyDTO> getProficienciesUnfiltered();
+    List<String> getTypes();
 }

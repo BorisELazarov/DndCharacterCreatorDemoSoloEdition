@@ -11,8 +11,13 @@ import java.util.Objects;
 public class Proficiency extends BaseEntity implements Serializable {
     @Column(name="name", nullable = false, length = 50)
     private String name;
-    @Column(name="type", nullable = false, length = 50)
-    private String type;
+    @ManyToOne
+    @JoinColumn(name="type_id", nullable = false)
+    private ProfType type;
+
+    @ManyToOne
+    @JoinColumn(name="subtype_id")
+    private ProfSubtype subtype;
 
     public String getName() {
         return name;
@@ -22,27 +27,39 @@ public class Proficiency extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public String getType() {
+    public ProfType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ProfType type) {
         this.type = type;
     }
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || o.getClass()!=this.getClass()) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy oProxy? oProxy.getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy thisProxy? thisProxy.getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Proficiency that = (Proficiency) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+    public ProfSubtype getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(ProfSubtype subtype) {
+        this.subtype = subtype;
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy proxy ? proxy.getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Proficiency that)) return false;
+        if (!super.equals(o)) return false;
+
+        if (!Objects.equals(name, that.name)) return false;
+        if (!Objects.equals(type, that.type)) return false;
+        return Objects.equals(subtype, that.subtype);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (subtype != null ? subtype.hashCode() : 0);
+        return result;
     }
 }

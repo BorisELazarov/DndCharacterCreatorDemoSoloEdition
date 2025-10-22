@@ -7,6 +7,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.implementation
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ClassMapper;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
+import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.enums.HitDiceEnum;
 import org.junit.jupiter.api.Test;
@@ -18,15 +19,16 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClassMapperTests {
-    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl();
+    private final ProfTypeMapper profTypeMapper = new ProfTypeMapperImpl();
+    private final ProficiencyMapper proficiencyMapper=new ProficiencyMapperImpl(profTypeMapper);
     private final ClassMapper classMapper=new ClassMapperImpl(proficiencyMapper);
     private ProficiencyDTO getProficiencyDTO(Long id, boolean isDeleted,
                                              String name, String type){
-        return new ProficiencyDTO(Optional.of(id), isDeleted, name,type);
+        return new ProficiencyDTO(Optional.of(id), isDeleted, name, type);
     }
 
     private Proficiency getProficiency(Long id, boolean isDeleted,
-                                       String name, String type){
+                                       String name, ProfType type){
         Proficiency proficiency=new Proficiency();
         if (id!=null)
             proficiency.setId(id);
@@ -36,12 +38,21 @@ class ClassMapperTests {
         return proficiency;
     }
 
+    private ProfType getType(Long id, boolean isDeleted, String name) {
+        ProfType profType = new ProfType();
+        if (id != null)
+            profType.setId(id);
+        profType.setIsDeleted(isDeleted);
+        profType.setName(name);
+        return profType;
+    }
+
     @Test
     void fromDtoAreEqual(){
         List<ProficiencyDTO> proficiencyDTOS=List.of(
-                getProficiencyDTO(1L,false,"athletics","skill"),
-                getProficiencyDTO(6L,false,"martial","weapons"),
-                getProficiencyDTO(8L,true,"heavy","armor")
+                getProficiencyDTO(1L,false,"athletics", "skill"),
+                getProficiencyDTO(6L,false,"martial", "weapons"),
+                getProficiencyDTO(8L,true,"heavy", "armor")
         );
         ClassDTO dto=new ClassDTO(Optional.of(57L),
                 false, "fighter",
@@ -66,10 +77,11 @@ class ClassMapperTests {
     }
     @Test
     void toDtoAreEqual(){
+
         Set<Proficiency> proficiencies= Set.of(
-                getProficiency(1L,false,"athletics","skill"),
-                getProficiency(6L,false,"martial","weapons"),
-                getProficiency(8L,true,"heavy","armor")
+                getProficiency(1L,false,"athletics", getType(null, false, "skill")),
+                getProficiency(6L,false,"martial", getType(null, false, "weapons")),
+                getProficiency(8L,true,"heavy", getType(null, false, "armor"))
         );
         DNDclass entity=new DNDclass();
         entity.setId(768L);
