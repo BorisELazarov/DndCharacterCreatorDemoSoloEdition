@@ -1,0 +1,29 @@
+<div class="center">
+    <div>
+        <h1>Edit feature</h1>
+        <form class="form" [formGroup]="editForm" (ngSubmit)="submit()">
+            <mat-form-field class="full-width">
+                <mat-label>Name:</mat-label>
+                <input matInput type="text" formControlName="name">
+                @if (editForm.controls['name'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must no be empty!</a>
+                    <br>
+                </div>
+                }
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Description:</mat-label>
+                <textarea matInput type="text" formControlName="description"></textarea>
+                @if (editForm.controls['description'].errors?.['required']) {
+                    <div>
+                        <a class="danger">*Field must no be empty!</a>
+                        <br>
+                    </div>
+                }
+            </mat-form-field>
+            <br>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 package com.example.dnd_character_creator_solo_edition.dal.entities;
 
+import com.example.dnd_character_creator_solo_edition.dal.entities.composite_ids.ProficiencyCharacterPairId;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

@@ -3,6 +3,7 @@ package com.example.dnd_character_creator_solo_edition.api.controllers;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.spells.SearchSpellDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.spells.SpellDTO;
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.SpellService;
+import com.example.dnd_character_creator_solo_edition.common.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = Constants.crossOrigin)
 @RequestMapping(path = "api/spells")
 public class SpellController {
     private final SpellService spellService;

@@ -1,0 +1,8 @@
+<h1>Proficiency details:</h1>
+<h2>Name: {{feature?.name}}</h2>
+<h2>Description:</h2>
+<p><span class="p-text">{{feature?.description}}</span></p>
+<a [routerLink]="['/features/edit', feature?.id]">Edit</a><br>
+<a (click)="openDialog()">delete</a><br>
+<a [routerLink]="['/features']">Back</a>
+

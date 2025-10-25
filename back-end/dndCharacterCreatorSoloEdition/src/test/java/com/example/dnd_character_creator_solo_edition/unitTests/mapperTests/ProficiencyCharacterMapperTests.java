@@ -8,7 +8,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProfType;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Proficiency;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacter;
-import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacterPairId;
+import com.example.dnd_character_creator_solo_edition.dal.entities.composite_ids.ProficiencyCharacterPairId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

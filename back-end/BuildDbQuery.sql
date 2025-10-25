@@ -125,7 +125,8 @@ create table proficiency_characters(
 create table features(
 	id bigint primary key auto_increment,
 	name nvarchar(50) not null,
-    description text not null
+    description text not null,
+	is_deleted bit not null default 0
 );
 
 create table class_features(
@@ -135,6 +136,7 @@ create table class_features(
     class_id bigint not null,
     foreign key(class_id)
     references classes(id),
-    level int not null default 1,
+    level tinyint not null default 1,
+    check(level > 0 && level < 21),
     primary key(feature_id, class_id)
 );

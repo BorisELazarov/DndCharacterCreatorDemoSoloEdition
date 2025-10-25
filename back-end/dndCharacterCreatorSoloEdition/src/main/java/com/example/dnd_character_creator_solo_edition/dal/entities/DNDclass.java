@@ -29,6 +29,10 @@ public class DNDclass extends BaseEntity implements Serializable {
     @OneToMany(mappedBy = "id.dndClass")
     private List<ClassSpell> classSpells;
 
+
+    @OneToMany(mappedBy = "id.dndClass")
+    private List<ClassFeature> classFeatures;
+
     public String getName() {
         return name;
     }
@@ -67,6 +71,14 @@ public class DNDclass extends BaseEntity implements Serializable {
 
     public void setClassSpells(List<ClassSpell> classSpells) {
         this.classSpells = classSpells;
+    }
+
+    public List<ClassFeature> getClassFeatures() {
+        return classFeatures;
+    }
+
+    public void setClassFeatures(List<ClassFeature> classFeatures) {
+        this.classFeatures = classFeatures;
     }
 
     @Override

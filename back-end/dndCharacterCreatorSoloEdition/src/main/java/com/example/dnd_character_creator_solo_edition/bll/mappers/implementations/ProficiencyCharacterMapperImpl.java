@@ -6,7 +6,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Pro
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Character;
 import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacter;
-import com.example.dnd_character_creator_solo_edition.dal.entities.ProficiencyCharacterPairId;
+import com.example.dnd_character_creator_solo_edition.dal.entities.composite_ids.ProficiencyCharacterPairId;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 

@@ -3,6 +3,7 @@ package com.example.dnd_character_creator_solo_edition.api.controllers;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.characters.CharacterDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.characters.SearchCharacterDTO;
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.CharacterService;
+import com.example.dnd_character_creator_solo_edition.common.Constants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = Constants.crossOrigin)
 @RequestMapping(path = "/api/characters")
 public class CharacterController {
     private final CharacterService service;

@@ -20,6 +20,10 @@ import { CharacterSheetComponent } from "./features/characters/character-sheet/c
 import { CharacterDeletedListComponent } from "./features/characters/character-deleted-list/character-deleted-list.component";
 import { PageNotFoundComponent } from "./core/page-not-found/page-not-found.component";
 import { HomeComponent } from "./core/home/home.component";
+import { FeatureListComponent } from "./features/features/feature-list/feature-list.component";
+import { CreateFeatureComponent } from "./features/features/create-feature/create-feature.component";
+import { DetailsFeatureComponent } from "./features/features/details-feature/details-feature.component";
+import { EditFeatureComponent } from "./features/features/edit-feature/edit-feature.component";
 
 
 export const routes: Routes = [
@@ -127,6 +131,26 @@ export const routes: Routes = [
         path:'characters',
         component:CharacterListComponent,
         title:'Your characters'
+    },
+    {
+        path: 'features',
+        component: FeatureListComponent,
+        title: 'All available features'
+    },
+    {
+        path: 'features/create',
+        component: CreateFeatureComponent,
+        title: 'Create new feature'
+    },
+    {
+        path: 'features/:id',
+        component: DetailsFeatureComponent,
+        title: 'Feature'
+    },
+    {
+        path: 'features/edit/:id',
+        component: EditFeatureComponent,
+        title: 'Change feature'
     },
     {
         path:"**",

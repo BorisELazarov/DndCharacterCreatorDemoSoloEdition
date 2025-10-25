@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RouterLink } from '@angular/router';
 import { ClassService } from '../../../shared/services/class-service/class.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ClassListItem } from '../../../shared/services/class-service/class-list-item';
@@ -18,7 +17,7 @@ import { ClassListItem } from '../../../shared/services/class-service/class-list
 @Component({
   selector: 'app-class-deleted-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatTableModule,
+  imports: [CommonModule, MatTableModule,
     MatPaginatorModule, MatSelectModule, MatButtonModule,
     MatInputModule, MatIconModule, FormsModule],
   templateUrl: './class-deleted-list.component.html',

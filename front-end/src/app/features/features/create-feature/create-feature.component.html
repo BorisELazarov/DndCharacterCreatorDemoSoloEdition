@@ -1,0 +1,29 @@
+<div class="center">
+    <div>
+        <h1>Add feature</h1>
+        <form class="form" [formGroup]="createForm" (ngSubmit)="submit()">
+            <mat-form-field class="full-width">
+                <mat-label>Name:</mat-label>
+                <input matInput type="text" formControlName="name">
+                @if (createForm.controls['name'].errors?.['required']) {
+                <div>
+                    <a class="danger">*Field must no be empty!</a>
+                    <br>
+                </div>
+                }
+            </mat-form-field>
+            <mat-form-field class="full-width">
+                <mat-label>Description:</mat-label>
+                <textarea matInput type="text" formControlName="description"></textarea>
+                @if (createForm.controls['description'].errors?.['required']) {
+                    <div>
+                        <a class="danger">*Field must no be empty!</a>
+                        <br>
+                    </div>
+                }
+            </mat-form-field>
+            <br>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>

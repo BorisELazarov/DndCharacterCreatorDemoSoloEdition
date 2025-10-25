@@ -5,7 +5,7 @@ import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.Cha
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.SpellMapper;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Character;
 import com.example.dnd_character_creator_solo_edition.dal.entities.CharacterSpell;
-import com.example.dnd_character_creator_solo_edition.dal.entities.CharacterSpellPairId;
+import com.example.dnd_character_creator_solo_edition.dal.entities.composite_ids.CharacterSpellPairId;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 
