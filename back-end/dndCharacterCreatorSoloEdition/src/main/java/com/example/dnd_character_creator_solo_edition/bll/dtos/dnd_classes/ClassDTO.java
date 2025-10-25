@@ -20,7 +20,9 @@ public record ClassDTO(Optional<Long> id, Boolean isDeleted,
                        HitDiceEnum hitDice,
                        @NotEmpty
                        @NotNull
-                       List<ProficiencyDTO> proficiencies){
+                       List<ProficiencyDTO> proficiencies,
+                       @NotNull
+                       List<ClassFeatureDTO> features){
     public ClassDTO {
         proficiencies=List.copyOf(proficiencies);
     }

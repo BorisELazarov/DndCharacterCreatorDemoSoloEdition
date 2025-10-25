@@ -30,7 +30,7 @@ public class DNDclass extends BaseEntity implements Serializable {
     private List<ClassSpell> classSpells;
 
 
-    @OneToMany(mappedBy = "id.dndClass")
+    @OneToMany(mappedBy = "id.dndClass", cascade = CascadeType.ALL)
     private List<ClassFeature> classFeatures;
 
     public String getName() {

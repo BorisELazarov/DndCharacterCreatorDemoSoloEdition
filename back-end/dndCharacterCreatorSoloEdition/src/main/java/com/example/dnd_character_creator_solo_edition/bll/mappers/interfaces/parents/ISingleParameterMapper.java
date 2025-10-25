@@ -6,7 +6,11 @@ import java.util.List;
 public interface ISingleParameterMapper<D, E> {
     E fromDto(D dto);
     D toDto(E entity);
-    List<E> fromDTOs(List<D> dtos);
+    default List<E> fromDTOs(List<D> dtos) {
+        return dtos.stream().map(this::fromDto).toList();
+    }
 
-    List<D> toDTOs(List<E> entities);
+    default List<D> toDTOs(List<E> entities) {
+        return entities.stream().map(this::toDto).toList();
+    }
 }

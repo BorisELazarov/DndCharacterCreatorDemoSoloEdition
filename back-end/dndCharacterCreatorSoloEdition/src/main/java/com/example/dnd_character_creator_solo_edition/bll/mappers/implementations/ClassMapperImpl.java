@@ -1,10 +1,11 @@
 package com.example.dnd_character_creator_solo_edition.bll.mappers.implementations;
 
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassDTO;
+import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ClassFeatureMapper;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ClassMapper;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ProficiencyMapper;
 import com.example.dnd_character_creator_solo_edition.dal.entities.DNDclass;
-import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedHashSet;
@@ -13,9 +14,12 @@ import java.util.List;
 @Component
 public class ClassMapperImpl implements ClassMapper {
     private final ProficiencyMapper proficiencyMapper;
+    private final ClassFeatureMapper classFeatureMapper;
 
-    public ClassMapperImpl(@NotNull ProficiencyMapper proficiencyMapper) {
+    @Autowired
+    public ClassMapperImpl(ProficiencyMapper proficiencyMapper, ClassFeatureMapper classFeatureMapper) {
         this.proficiencyMapper = proficiencyMapper;
+        this.classFeatureMapper = classFeatureMapper;
     }
 
     @Override
@@ -31,6 +35,7 @@ public class ClassMapperImpl implements ClassMapper {
         dndClass.setProficiencies(
                 new LinkedHashSet<>(proficiencyMapper.fromDTOs(classDTO.proficiencies()))
         );
+        dndClass.setClassFeatures(classFeatureMapper.fromDTOs(classDTO.features(), dndClass));
         return dndClass;
     }
 
@@ -38,7 +43,8 @@ public class ClassMapperImpl implements ClassMapper {
     public ClassDTO toDto(DNDclass dndClass) {
         if(dndClass==null)
             return null;
-        return new ClassDTO(dndClass.getId().describeConstable(),
+        return new ClassDTO(
+                dndClass.getId().describeConstable(),
                 dndClass.getIsDeleted(),
                 dndClass.getName(),
                 dndClass.getDescription(),
@@ -48,7 +54,8 @@ public class ClassMapperImpl implements ClassMapper {
                         dndClass.getProficiencies()
                                 .stream().toList()
                         )
-                )
+                ),
+                List.copyOf(classFeatureMapper.toDTOs(dndClass.getClassFeatures()))
         );
     }
 

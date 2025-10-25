@@ -21,6 +21,11 @@ public class FeatureController {
         this.featureService = featureService;
     }
 
+    @GetMapping(path = "/getUnfiltered")
+    public ResponseEntity<List<FeatureDTO>> getAllUnfiltered() {
+        return new ResponseEntity<>(this.featureService.getAll(false), HttpStatus.OK);
+    }
+
     @PostMapping(path = "/getAll")
     public ResponseEntity<List<FeatureDTO>> getAll(@RequestBody SearchFeatureDTO search) {
         return new ResponseEntity<>(this.featureService.getAll(search, false), HttpStatus.OK);

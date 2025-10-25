@@ -157,3 +157,17 @@ osrc/main/java/com/example/dnd_character_creator_solo_edition/dal/entities/compo
 qsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/services/implementations/FeatureServiceImpl.java,0\7\07566b9ace1c5331f591d04347094322e3767c5a
 ê
 `src/main/java/com/example/dnd_character_creator_solo_edition/dal/repos/features/FeatureRepo.java,b\d\bd0744a13d00249b115ca00ed76cc6bf62567e8f
+à
+Xsrc/main/java/com/example/dnd_character_creator_solo_edition/filters/DndClassFilter.java,6\5\657702f07875af53a3f3966d02bf4d32730dc6cc
+ï
+esrc/main/java/com/example/dnd_character_creator_solo_edition/bll/dtos/dnd_classes/SearchClassDTO.java,4\9\4979e4e489af44fe5cc4c32570c81a10b2afe882
+ï
+esrc/main/java/com/example/dnd_character_creator_solo_edition/dal/repos/features/ClassFeatureRepo.java,4\9\493001add0e3369ab836b47d1d6224fcf0ae8478
+è
+_src/main/java/com/example/dnd_character_creator_solo_edition/bll/dtos/dnd_classes/ClassDTO.java,f\d\fd6eb2cb44884a1999ca0b9414b58a200b891cdd
+ñ
+fsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/dtos/dnd_classes/ClassFeatureDTO.java,6\4\64e85a4e767a347914fa17b11b577934779bf5f6
+õ
+ksrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/interfaces/ClassFeatureMapper.java,c\4\c4d57a1bcdaee52458dafb2d1563949fcdc08286
+§
+tsrc/main/java/com/example/dnd_character_creator_solo_edition/bll/mappers/implementations/ClassFeatureMapperImpl.java,6\e\6e8e81fb68c05138b7c5d0c401f2f9ffacacd827

@@ -1,11 +1,14 @@
 package com.example.dnd_character_creator_solo_edition.bll.services.interfaces;
 
+import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassFeatureDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.features.FeatureDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.features.SearchFeatureDTO;
 
 import java.util.List;
 
 public interface FeatureService {
+    List<FeatureDTO> getAll(boolean deleted);
+
     List<FeatureDTO> getAll(SearchFeatureDTO search, boolean deleted);
 
     FeatureDTO getFeature(Long id);
@@ -19,4 +22,6 @@ public interface FeatureService {
     void softDeleteFeature(Long id);
 
     void hardDeleteFeature(Long id);
+
+    List<ClassFeatureDTO> getFeaturesForClass(Long classId);
 }

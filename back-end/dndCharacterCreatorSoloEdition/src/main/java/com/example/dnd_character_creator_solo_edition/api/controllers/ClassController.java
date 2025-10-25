@@ -1,8 +1,10 @@
 package com.example.dnd_character_creator_solo_edition.api.controllers;
 
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassDTO;
+import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassFeatureDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.SearchClassDTO;
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.ClassService;
+import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.FeatureService;
 import com.example.dnd_character_creator_solo_edition.common.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,12 @@ import java.util.List;
 @RequestMapping(path="api/classes")
 public class ClassController {
     private final ClassService classService;
+    private final FeatureService featureService;
 
     @Autowired
-    public ClassController(ClassService classService) {
+    public ClassController(ClassService classService, FeatureService featureService) {
         this.classService = classService;
+        this.featureService = featureService;
     }
 
     @GetMapping
@@ -95,5 +99,10 @@ public class ClassController {
     public ResponseEntity<Void> hardDeleteClass(@RequestParam Long id) {
         classService.hardDeleteClass(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/getFeatures")
+    public ResponseEntity<List<ClassFeatureDTO>> getFeatures(@RequestParam Long classId) {
+        return new ResponseEntity<>(this.featureService.getFeaturesForClass(classId), HttpStatus.OK);
     }
 }

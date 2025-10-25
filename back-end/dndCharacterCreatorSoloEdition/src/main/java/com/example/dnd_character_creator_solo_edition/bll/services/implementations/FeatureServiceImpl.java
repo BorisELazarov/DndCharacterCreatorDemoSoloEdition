@@ -1,10 +1,13 @@
 package com.example.dnd_character_creator_solo_edition.bll.services.implementations;
 
+import com.example.dnd_character_creator_solo_edition.bll.dtos.dnd_classes.ClassFeatureDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.features.FeatureDTO;
 import com.example.dnd_character_creator_solo_edition.bll.dtos.features.SearchFeatureDTO;
+import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.ClassFeatureMapper;
 import com.example.dnd_character_creator_solo_edition.bll.mappers.interfaces.FeatureMapper;
 import com.example.dnd_character_creator_solo_edition.bll.services.interfaces.FeatureService;
 import com.example.dnd_character_creator_solo_edition.dal.entities.Feature;
+import com.example.dnd_character_creator_solo_edition.dal.repos.features.ClassFeatureRepo;
 import com.example.dnd_character_creator_solo_edition.dal.repos.features.FeatureRepo;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NameAlreadyTakenException;
 import com.example.dnd_character_creator_solo_edition.exceptions.customs.NotFoundException;
@@ -30,17 +33,26 @@ public class FeatureServiceImpl implements FeatureService {
 
     private final FeatureRepo repo;
     private final FeatureMapper mapper;
+    private final ClassFeatureRepo classFeatureRepo;
+    private final ClassFeatureMapper classFeatureMapper;
 
     @PersistenceContext
     private final EntityManager em;
 
     @Autowired
-    public FeatureServiceImpl(FeatureRepo repo, FeatureMapper mapper, EntityManager em) {
+    public FeatureServiceImpl(FeatureRepo repo, FeatureMapper mapper, EntityManager em,
+                              ClassFeatureMapper classFeatureMapper, ClassFeatureRepo classFeatureRepo) {
         this.repo = repo;
         this.mapper = mapper;
         this.em = em;
+        this.classFeatureMapper = classFeatureMapper;
+        this.classFeatureRepo = classFeatureRepo;
     }
 
+    @Override
+    public List<FeatureDTO> getAll(boolean deleted) {
+        return this.mapper.toDTOs(this.repo.findAll(deleted));
+    }
 
     @Override
     public List<FeatureDTO> getAll(SearchFeatureDTO search, boolean deleted) {
@@ -126,6 +138,11 @@ public class FeatureServiceImpl implements FeatureService {
         }
         foundFeature.setIsDeleted(true);
         this.repo.save(foundFeature);
+    }
+
+    @Override
+    public List<ClassFeatureDTO> getFeaturesForClass(Long classId) {
+        return this.classFeatureMapper.toDTOs(this.classFeatureRepo.findByClassId(classId));
     }
 
     private void checkForExistingFeatureWithSameName(String name) {
